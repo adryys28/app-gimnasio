@@ -1,0 +1,99 @@
+import 'formato.dart';
+
+/// Respuesta de GET /rutinas/activa y de las operaciones sobre rutinas.
+class Rutina {
+  const Rutina({required this.rutinaId, required this.nombre, required this.origen, required this.dias});
+
+  final int rutinaId;
+  final String nombre;
+  final String origen; // S = sugerida, M = manual
+  final List<DiaRutina> dias;
+
+  factory Rutina.fromJson(Map<String, dynamic> j) => Rutina(
+        rutinaId: aEntero(j['rutinaId'])!,
+        nombre: j['nombre'] as String,
+        origen: j['origen'] as String,
+        dias: (j['dias'] as List).map((d) => DiaRutina.fromJson(d as Map<String, dynamic>)).toList(),
+      );
+}
+
+class DiaRutina {
+  const DiaRutina({required this.rutinaDiaId, required this.orden, required this.nombre, required this.ejercicios});
+
+  final int rutinaDiaId;
+  final int orden;
+  final String nombre;
+  final List<EjercicioRutina> ejercicios;
+
+  int get totalSeries => ejercicios.fold(0, (suma, e) => suma + e.series);
+
+  factory DiaRutina.fromJson(Map<String, dynamic> j) => DiaRutina(
+        rutinaDiaId: aEntero(j['rutinaDiaId'])!,
+        orden: aEntero(j['orden'])!,
+        nombre: j['nombre'] as String,
+        ejercicios: (j['ejercicios'] as List)
+            .map((e) => EjercicioRutina.fromJson(e as Map<String, dynamic>))
+            .toList(),
+      );
+}
+
+class EjercicioRutina {
+  const EjercicioRutina({
+    required this.rutinaDiaEjercicioId,
+    required this.orden,
+    required this.ejercicioId,
+    required this.nombre,
+    required this.series,
+    required this.tipoMedida,
+    required this.descansoSeg,
+    this.videoUrl,
+    this.repsMin,
+    this.repsMax,
+    this.duracionSegMin,
+    this.duracionSegMax,
+    this.pesoObjetivoKg,
+    this.rpeObjetivo,
+  });
+
+  final int rutinaDiaEjercicioId;
+  final int orden;
+  final int ejercicioId;
+  final String nombre;
+  final String? videoUrl;
+  final int series;
+  final String tipoMedida; // R = repeticiones, T = tiempo
+  final int? repsMin;
+  final int? repsMax;
+  final int? duracionSegMin;
+  final int? duracionSegMax;
+  final double? pesoObjetivoKg;
+  final int descansoSeg;
+  final double? rpeObjetivo;
+
+  bool get porTiempo => tipoMedida == 'T';
+
+  /// "3 × 8–10 reps · 17 kg" o "3 × 30–45 s"
+  String get objetivoTexto {
+    final medida = porTiempo ? '${rango(duracionSegMin, duracionSegMax)} s' : '${rango(repsMin, repsMax)} reps';
+    final peso = pesoObjetivoKg;
+    final carga = peso == null ? '' : ' · ${formatearNumero(peso)} kg';
+    return '$series × $medida$carga';
+  }
+
+  factory EjercicioRutina.fromJson(Map<String, dynamic> j) => EjercicioRutina(
+        rutinaDiaEjercicioId: aEntero(j['rutinaDiaEjercicioId'])!,
+        orden: aEntero(j['orden'])!,
+        ejercicioId: aEntero(j['ejercicioId'])!,
+        nombre: j['nombre'] as String,
+        videoUrl: j['videoUrl'] as String?,
+        series: aEntero(j['series'])!,
+        tipoMedida: j['tipoMedida'] as String,
+        repsMin: aEntero(j['repsMin']),
+        repsMax: aEntero(j['repsMax']),
+        duracionSegMin: aEntero(j['duracionSegMin']),
+        duracionSegMax: aEntero(j['duracionSegMax']),
+        pesoObjetivoKg: aDecimal(j['pesoObjetivoKg']),
+        descansoSeg: aEntero(j['descansoSeg']) ?? 90,
+        rpeObjetivo: aDecimal(j['rpeObjetivo']),
+      );
+}

@@ -17,6 +17,12 @@ if (builder.Environment.IsDevelopment())
     // Solo desarrollo: la identidad se toma de la cabecera X-Dev-Sub
     builder.Services.AddAuthentication(DevAuthHandler.Esquema)
         .AddScheme<AuthenticationSchemeOptions, DevAuthHandler>(DevAuthHandler.Esquema, null);
+
+    // Solo desarrollo: permite llamadas desde la app Flutter ejecutada en Chrome (http://localhost:<puerto>)
+    builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
+        .SetIsOriginAllowed(origen => Uri.TryCreate(origen, UriKind.Absolute, out var uri) && uri.IsLoopback)
+        .AllowAnyHeader()
+        .AllowAnyMethod()));
 }
 else
 {
@@ -34,6 +40,10 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 app.UseExceptionHandler();
+
+if (app.Environment.IsDevelopment())
+    app.UseCors();
+
 app.UseAuthentication();
 app.UseAuthorization();
 

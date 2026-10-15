@@ -24,3 +24,16 @@ appsettings.*.local.json
 # Sistema
 .DS_Store
 Thumbs.db
+
+# Flutter / Dart
+.dart_tool/
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+*.iml
+.idea/
+app/ios/Flutter/ephemeral/
+app/windows/flutter/ephemeral/
+app/linux/flutter/ephemeral/
+app/macos/Flutter/ephemeral/

@@ -7,6 +7,7 @@
 | `sql/`       | Modelo de datos y procedimientos (SQL Server 2017+ / Azure SQL) |
 | `api/GymApi` | API REST en .NET 10 (Dapper + Microsoft.Data.SqlClient) |
 | `prototipo/` | Fuentes de las 7 pantallas del prototipo |
+| `app/`       | App Flutter (iOS, Android, web y escritorio) |
 
 ## Base de datos
 
@@ -43,6 +44,24 @@ dotnet run
 - En `appsettings.json` hay que sustituir el servidor, el inquilino y el client ID de Microsoft Entra External ID.
 - Documento OpenAPI en desarrollo: `/openapi/v1.json`.
 
+## App Flutter
+
+Primera vez (genera las carpetas de cada plataforma sin tocar `lib/` ni `test/`):
+
+```
+cd app
+flutter create . --project-name app_gimnasio --org com.TU-EMPRESA --platforms=android,ios,web,windows
+flutter pub get
+```
+
+Ejecutar contra la API local (arrancada con `dotnet run`):
+
+```
+flutter run -d chrome --dart-define=API_URL=http://localhost:5080
+```
+
+La API permite peticiones desde `localhost` solo en el entorno Development (CORS). Las compilaciones de iOS requieren un Mac con Xcode.
+
 ## Prototipo
 
 Los archivos `.dc.html` necesitan el entorno de diseño de Claude para mostrarse; abiertos directamente en el navegador no se ven. La versión navegable está en:
@@ -55,6 +74,7 @@ https://claude.ai/artifact/G5CgAEHJpm5cCSkEC1qFgg
 El flujo `.github/workflows/ci.yml` se ejecuta en cada push a `main` y en cada pull request:
 
 - **Compilar API:** `dotnet build` con .NET 10.
+- **Analizar y probar app Flutter:** `flutter analyze` y `flutter test`.
 - **Validar scripts SQL:** arranca SQL Server 2022 en un contenedor y ejecuta los scripts `00` a `11` en orden, incluidas sus pruebas. Falla ante el primer error.
 
 Dependabot revisa cada semana las dependencias de NuGet y de GitHub Actions.
@@ -63,7 +83,8 @@ Dependabot revisa cada semana las dependencias de NuGet y de GitHub Actions.
 
 - Notificaciones de compra de Apple, Google y Stripe en la API (verificación de firmas y llamada a usp_ProcesarEventoSuscripcion).
 - Pantallas de actividad de cardio con mapa y de catálogo de ejercicios.
-- App Flutter (iOS, Android, web y escritorio) y apps de reloj (watchOS, Wear OS, Garmin).
+- App Flutter: registro e inicio de sesión real, cardio con mapa, catálogo y suscripción (ya hechas: Hoy, Sesión y Resumen).
+- Apps de reloj (watchOS, Wear OS, Garmin).
 - Revisión profesional de los contenidos de ejercicios y de los umbrales de adaptación.
 - EIPD y registro de actividades de tratamiento (RGPD).
 

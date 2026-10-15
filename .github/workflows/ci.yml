@@ -20,6 +20,23 @@ jobs:
       - name: Compilar
         run: dotnet build api/GymApi/GymApi.csproj -c Release
 
+  app:
+    name: Analizar y probar app Flutter
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      # Las sugerencias de estilo (infos) no bloquean; los avisos y errores sí
+      - run: flutter analyze --no-fatal-infos
+      - run: flutter test
+
   sql:
     name: Validar scripts SQL
     runs-on: ubuntu-latest
