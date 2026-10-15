@@ -46,6 +46,19 @@ public sealed class Db(IConfiguration config)
         return filas;
     }
 
+    /// <summary>Ejecuta un procedimiento que devuelve dos conjuntos de resultados (p. ej. resumen + detalle).</summary>
+    public async Task<(List<T1> Primero, List<T2> Segundo)> ProcMultipleAsync<T1, T2>(
+        string proc, object parametros, CancellationToken ct)
+    {
+        await using var cn = Abrir();
+        using var grid = await cn.QueryMultipleAsync(new CommandDefinition(proc, parametros,
+            commandType: CommandType.StoredProcedure, cancellationToken: ct));
+
+        var primero = (await grid.ReadAsync<T1>()).AsList();
+        var segundo = (await grid.ReadAsync<T2>()).AsList();
+        return (primero, segundo);
+    }
+
     public async Task<List<T>> QueryAsync<T>(string sql, object? parametros, CancellationToken ct)
     {
         await using var cn = Abrir();

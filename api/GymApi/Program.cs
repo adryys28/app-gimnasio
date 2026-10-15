@@ -44,5 +44,8 @@ app.MapCatalogoEndpoints();
 app.MapUsuarioEndpoints();
 app.MapRutinaEndpoints();
 app.MapSesionEndpoints();
+app.MapActividadEndpoints();
+app.MapPerfilEndpoints();
+app.MapPlanEndpoints();
 
 app.Run();

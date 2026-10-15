@@ -71,3 +71,69 @@ X-Dev-Sub: {{sub}}
 Content-Type: application/json
 
 {}
+
+### ===== Cardio, perfil y planes (scripts 09 a 11) =====
+
+### Tipos de actividad (público)
+GET {{host}}/actividades/tipos
+
+### Datos fisiológicos
+PATCH {{host}}/usuarios/me/fisiologia
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "pesoCorporalKg": 70, "fechaNacimiento": "1990-05-10", "sexoCalculo": "H" }
+
+### Consentimientos vigentes
+GET {{host}}/consentimientos
+X-Dev-Sub: {{sub}}
+
+### Otorgar consentimiento de ubicación
+POST {{host}}/consentimientos
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "tipo": "UBICACION", "otorgado": true, "versionTexto": "v1" }
+
+### Zona privada
+POST {{host}}/zonas-privadas
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "nombre": "Casa", "lat": 40.4153, "lon": -3.6845, "radioM": 200 }
+
+### Iniciar carrera
+POST {{host}}/actividades
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "tipoActividadId": 1, "origen": "MOVIL" }
+
+### Lote de puntos (sustituye 1 por el ActividadId devuelto)
+POST {{host}}/actividades/1/puntos
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+[
+  { "s": 1, "t": "2026-10-15T08:00:00Z", "lat": 40.4153, "lon": -3.6845, "alt": 650, "acc": 5, "fc": 120 },
+  { "s": 2, "t": "2026-10-15T08:00:01Z", "lat": 40.41533, "lon": -3.6845, "alt": 650, "acc": 5, "fc": 122 }
+]
+
+### Finalizar (kcalDispositivo opcional)
+POST {{host}}/actividades/1/finalizar
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{}
+
+### Detalle con parciales y ruta en GeoJSON
+GET {{host}}/actividades/1
+X-Dev-Sub: {{sub}}
+
+### Historial
+GET {{host}}/actividades?pagina=1&tamPagina=20
+X-Dev-Sub: {{sub}}
+
+### Estado del plan
+GET {{host}}/planes/estado
+X-Dev-Sub: {{sub}}

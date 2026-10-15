@@ -61,7 +61,7 @@ Dependabot revisa cada semana las dependencias de NuGet y de GitHub Actions.
 
 ## Pendiente
 
-- Endpoints de la API para cardio, datos fisiológicos y suscripciones (scripts 09 a 11), incluida la verificación de firmas de las notificaciones de Apple, Google y Stripe.
+- Notificaciones de compra de Apple, Google y Stripe en la API (verificación de firmas y llamada a usp_ProcesarEventoSuscripcion).
 - Pantallas de actividad de cardio con mapa y de catálogo de ejercicios.
 - App Flutter (iOS, Android, web y escritorio) y apps de reloj (watchOS, Wear OS, Garmin).
 - Revisión profesional de los contenidos de ejercicios y de los umbrales de adaptación.
