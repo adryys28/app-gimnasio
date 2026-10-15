@@ -13,6 +13,8 @@
     <!-- 10.0.* toma el último parche de .NET 10 disponible al restaurar -->
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.*" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.*" />
+    <!-- Fija una versión corregida de esta dependencia de Microsoft.Data.SqlClient (avisos NU1902/NU1903) -->
+    <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.*" />
   </ItemGroup>
 
 </Project>
