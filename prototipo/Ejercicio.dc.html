@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Detalle de ejercicio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;background:#F3F0E8;color:#1B1A17}
+button{font-family:inherit;cursor:pointer}
+a{color:#9A3412}a:hover{color:#7C2D12}
+</style>
+</helmet>
+<div style="width: 390px; height: 1040px; box-sizing: border-box; padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 18px; background: #F3F0E8; font-family: 'Instrument Sans', system-ui, sans-serif; color: #1B1A17">
+
+<a href="Hoy.dc.html" aria-label="Volver" style="width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; border: 1px solid #DDD7CB; display: flex; align-items: center; justify-content: center; color: #1B1A17">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M15 18l-6-6 6-6"></path></svg></a>
+
+<div style="position: relative; width: 350px; height: 197px; border-radius: 16px; background: #1B1A17; display: flex; align-items: center; justify-content: center">
+<button type="button" aria-label="Reproducir vídeo de técnica" style="width: 64px; height: 64px; border-radius: 999px; border: none; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true" style="fill: currentColor; stroke: none"><path d="M8 5l11 7-11 7z"></path></svg></button>
+<span style="position: absolute; left: 14px; bottom: 12px; font-size: 13px; font-weight: 600; color: #E9E5DC">[VÍDEO DE TÉCNICA]</span>
+</div>
+
+<header style="display: flex; flex-direction: column; gap: 10px">
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-size: 36px; line-height: 1; font-weight: 700">Remo con mancuerna</h1>
+<div style="display: flex; flex-wrap: wrap; gap: 6px">
+<span style="padding: 6px 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid #DDD7CB; font-size: 13px; font-weight: 600">Principiante</span>
+<span style="padding: 6px 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid #DDD7CB; font-size: 13px; font-weight: 600">Mancuernas · Banco</span>
+<span style="padding: 6px 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid #DDD7CB; font-size: 13px; font-weight: 600">Por repeticiones</span>
+</div>
+</header>
+
+<section aria-labelledby="t-musculos" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="t-musculos" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Músculos</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<span style="font-size: 13px; color: #5C5850">Principal</span>
+<span style="font-size: 16px; font-weight: 600">Espalda</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<span style="font-size: 13px; color: #5C5850">Secundario</span>
+<span style="font-size: 16px; font-weight: 600">Bíceps</span>
+</div>
+</div>
+</section>
+
+<section aria-labelledby="t-pasos" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="t-pasos" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Cómo se hace</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
+<li style="display: flex; gap: 12px"><span style="flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px; background: #1B1A17; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">1</span><span style="font-size: 15px; line-height: 1.45">Apoya la rodilla y la mano del mismo lado en el banco, con la espalda neutra.</span></li>
+<li style="display: flex; gap: 12px"><span style="flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px; background: #1B1A17; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">2</span><span style="font-size: 15px; line-height: 1.45">Sujeta la mancuerna con el brazo extendido, bajo el hombro.</span></li>
+<li style="display: flex; gap: 12px"><span style="flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px; background: #1B1A17; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">3</span><span style="font-size: 15px; line-height: 1.45">Lleva el codo hacia la cadera hasta que la mancuerna quede a la altura del torso.</span></li>
+<li style="display: flex; gap: 12px"><span style="flex-shrink: 0; width: 26px; height: 26px; border-radius: 999px; background: #1B1A17; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600">4</span><span style="font-size: 15px; line-height: 1.45">Baja de forma controlada hasta extender el brazo.</span></li>
+</ol>
+</section>
+
+<section aria-labelledby="t-errores" style="display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<h2 id="t-errores" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Errores comunes</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.4"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px; fill: none; stroke: #9A3412; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 4l9 16H3z M12 10v4 M12 17h.01"></path></svg>Girar el tronco para ayudarte a subir el peso.</li>
+<li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.4"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px; fill: none; stroke: #9A3412; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 4l9 16H3z M12 10v4 M12 17h.01"></path></svg>Encoger el hombro hacia la oreja al tirar.</li>
+<li style="display: flex; gap: 10px; font-size: 15px; line-height: 1.4"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; margin-top: 2px; fill: none; stroke: #9A3412; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 4l9 16H3z M12 10v4 M12 17h.01"></path></svg>Redondear la espalda durante el movimiento.</li>
+</ul>
+</section>
+
+<a href="Configurar.dc.html" style="margin-top: auto; display: flex; align-items: center; justify-content: center; min-height: 56px; border-radius: 16px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none">Añadir a mi rutina</a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C2410C","options":["#C2410C","#1D4E89","#0F766E","#6D28D9"]},"$preview":{"width":390,"height":1040}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#C2410C' };
+  }
+}
+</script>
+</body>
+</html>

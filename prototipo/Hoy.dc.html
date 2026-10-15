@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Hoy</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;background:#F3F0E8;color:#1B1A17}
+button{font-family:inherit;cursor:pointer}
+a{color:#9A3412}a:hover{color:#7C2D12}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 28px 20px 0; display: flex; flex-direction: column; gap: 20px; background: #F3F0E8; font-family: 'Instrument Sans', system-ui, sans-serif; color: #1B1A17">
+
+<header style="display: flex; flex-direction: column; gap: 4px">
+<p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: {{accent}}">Hoy toca</p>
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-size: 40px; line-height: 1; font-weight: 700">Día A · Full body</h1>
+<p style="margin: 0; font-size: 15px; color: #5C5850">Full body 3 días · 4 ejercicios · 12 series</p>
+</header>
+
+<section aria-label="Último ajuste de tu rutina" style="display: flex; gap: 12px; padding: 14px 16px; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<span style="flex-shrink: 0; width: 36px; height: 36px; border-radius: 10px; background: #FBE3D6; color: #9A3412; display: flex; align-items: center; justify-content: center">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M12 19V5M5 12l7-7 7 7"></path></svg>
+</span>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<p style="margin: 0; font-size: 15px; font-weight: 600">Tu rutina se ha ajustado</p>
+<p style="margin: 0; font-size: 14px; line-height: 1.4; color: #5C5850">Remo con mancuerna sube de 16 a 17 kg: completaste todas las series con un esfuerzo asumible.</p>
+</div>
+</section>
+
+<section aria-labelledby="t-ejercicios" style="display: flex; flex-direction: column; gap: 10px">
+<h2 id="t-ejercicios" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Ejercicios</h2>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<li>
+<a href="Ejercicio.dc.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; min-height: 64px; box-sizing: border-box; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB; text-decoration: none; color: #1B1A17">
+<span style="flex-shrink: 0; width: 32px; height: 32px; border-radius: 999px; background: #F3F0E8; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700">1</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Sentadilla goblet</span><span style="font-size: 14px; color: #5C5850">3 × 10–12 reps · 12 kg</span></span>
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: #5C5850; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</li>
+<li>
+<a href="Ejercicio.dc.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; min-height: 64px; box-sizing: border-box; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB; text-decoration: none; color: #1B1A17">
+<span style="flex-shrink: 0; width: 32px; height: 32px; border-radius: 999px; background: #F3F0E8; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700">2</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Flexiones</span><span style="font-size: 14px; color: #5C5850">3 × 10–12 reps · peso corporal</span></span>
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: #5C5850; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</li>
+<li>
+<a href="Ejercicio.dc.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; min-height: 64px; box-sizing: border-box; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB; text-decoration: none; color: #1B1A17">
+<span style="flex-shrink: 0; width: 32px; height: 32px; border-radius: 999px; background: #F3F0E8; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700">3</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Remo con mancuerna</span><span style="font-size: 14px; color: #5C5850">3 × 8–10 reps · 17 kg</span></span>
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: #5C5850; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</li>
+<li>
+<a href="Ejercicio.dc.html" style="display: flex; align-items: center; gap: 14px; padding: 12px 14px; min-height: 64px; box-sizing: border-box; border-radius: 14px; background: #FFFFFF; border: 1px solid #DDD7CB; text-decoration: none; color: #1B1A17">
+<span style="flex-shrink: 0; width: 32px; height: 32px; border-radius: 999px; background: #F3F0E8; display: flex; align-items: center; justify-content: center; font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700">4</span>
+<span style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 16px; font-weight: 600">Plancha frontal</span><span style="font-size: 14px; color: #5C5850">3 × 30–45 s</span></span>
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="flex-shrink: 0; fill: none; stroke: #5C5850; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6l6 6-6 6"></path></svg>
+</a>
+</li>
+</ol>
+</section>
+
+<a href="Sesion.dc.html" style="margin-top: auto; display: flex; align-items: center; justify-content: center; min-height: 56px; border-radius: 16px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none">Empezar sesión</a>
+
+<nav aria-label="Principal" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0 -20px; padding: 6px 12px 10px; background: #FFFFFF; border-top: 1px solid #DDD7CB">
+<a href="Hoy.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; text-decoration: none; color: {{accent}}; font-size: 12px; font-weight: 600">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"></path></svg>Hoy</a>
+<a href="Rutina.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; text-decoration: none; color: #5C5850; font-size: 12px; font-weight: 500">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"></path></svg>Rutina</a>
+<a href="Ejercicio.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; text-decoration: none; color: #5C5850; font-size: 12px; font-weight: 500">
+<svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M6 7v10M18 7v10M3 10v4M21 10v4M6 12h12"></path></svg>Ejercicios</a>
+</nav>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C2410C","options":["#C2410C","#1D4E89","#0F766E","#6D28D9"]},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return { accent: this.props.accent ?? '#C2410C' };
+  }
+}
+</script>
+</body>
+</html>

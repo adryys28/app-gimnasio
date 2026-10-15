@@ -1,0 +1,26 @@
+# .NET
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/*
+!.vscode/extensions.json
+TestResults/
+
+# Configuración local y secretos (usar dotnet user-secrets o variables de entorno)
+appsettings.*.local.json
+*.local.json
+.env
+.env.*
+*.pfx
+*.pem
+
+# SQL Server
+*.bak
+*.mdf
+*.ldf
+
+# Sistema
+.DS_Store
+Thumbs.db

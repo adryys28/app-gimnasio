@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Sesión en curso</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;background:#F3F0E8;color:#1B1A17}
+button{font-family:inherit;cursor:pointer}
+a{color:#9A3412}a:hover{color:#7C2D12}
+</style>
+</helmet>
+<div style="width: 390px; height: 900px; box-sizing: border-box; padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 20px; background: #F3F0E8; font-family: 'Instrument Sans', system-ui, sans-serif; color: #1B1A17">
+
+<header style="display: flex; align-items: center; gap: 14px">
+<a href="Hoy.dc.html" aria-label="Salir de la sesión" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; border: 1px solid #DDD7CB; display: flex; align-items: center; justify-content: center; color: #1B1A17">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M6 6l12 12M18 6L6 18"></path></svg>
+</a>
+<div style="flex-grow: 1; display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 13px; font-weight: 600; color: #5C5850">Ejercicio 3 de 4</p>
+<div style="height: 6px; border-radius: 999px; background: #DDD7CB; overflow: hidden">
+<div style="width: 62%; height: 100%; background: {{accent}}"></div>
+</div>
+</div>
+</header>
+
+<section style="display: flex; flex-direction: column; gap: 4px">
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-size: 36px; line-height: 1; font-weight: 700">Remo con mancuerna</h1>
+<p style="margin: 0; font-size: 15px; color: #5C5850">Objetivo: 3 × 8–10 reps · 17 kg</p>
+<a href="Ejercicio.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; min-height: 44px; font-size: 15px; font-weight: 600">Ver técnica</a>
+</section>
+
+<sc-if value="{{enCurso}}" hint-placeholder-val="{{ true }}">
+<section aria-label="Registrar serie" style="display: flex; flex-direction: column; gap: 16px; padding: 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<h2 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{serieTexto}}</h2>
+<span style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: #F3F0E8; font-size: 13px; font-weight: 600; color: #45423C">
+<svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><circle cx="12" cy="12" r="8"></circle><path d="M12 8v4l3 2"></path></svg>Descanso 1:30</span>
+</div>
+
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 13px; font-weight: 600; color: #5C5850">Repeticiones</p>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 4px">
+<button type="button" onClick="{{menosReps}}" aria-label="Restar una repetición" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 700">{{reps}}</span>
+<button type="button" onClick="{{masReps}}" aria-label="Sumar una repetición" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 13px; font-weight: 600; color: #5C5850">Peso (kg)</p>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 4px">
+<button type="button" onClick="{{menosPeso}}" aria-label="Restar un kilo" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="font-family: 'Barlow Condensed', sans-serif; font-size: 36px; font-weight: 700">{{peso}}</span>
+<button type="button" onClick="{{masPeso}}" aria-label="Sumar un kilo" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h3 id="t-rpe" style="margin: 0; font-size: 15px; font-weight: 600">¿Cuánto esfuerzo te ha costado?</h3>
+<div role="group" aria-labelledby="t-rpe" style="display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{rpes}}" as="r" hint-placeholder-count="5">
+<button type="button" onClick="{{r.pick}}" aria-pressed="{{r.pressed}}" aria-label="{{r.etiqueta}}" style="height: 52px; border-radius: 12px; border: 1.5px solid {{r.borde}}; background: {{r.fondo}}; color: {{r.texto}}; font-family: 'Barlow Condensed', sans-serif; font-size: 24px; font-weight: 700">{{r.valor}}</button>
+</sc-for>
+</div>
+<p aria-live="polite" style="margin: 0; font-size: 14px; color: #5C5850">RPE {{rpe}}: {{rpeDesc}}</p>
+</div>
+
+<button type="button" onClick="{{guardar}}" style="min-height: 56px; border-radius: 16px; border: none; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 600">Guardar serie</button>
+</section>
+</sc-if>
+
+<sc-if value="{{completado}}" hint-placeholder-val="{{ false }}">
+<section style="display: flex; align-items: center; gap: 12px; padding: 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<span style="flex-shrink: 0; width: 40px; height: 40px; border-radius: 999px; background: {{accent}}; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round"><path d="M5 12l5 5 9-10"></path></svg></span>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<p style="margin: 0; font-size: 16px; font-weight: 600">Has completado las 3 series</p>
+<p style="margin: 0; font-size: 14px; color: #5C5850">Siguiente: Plancha frontal</p>
+</div>
+</section>
+</sc-if>
+
+<section aria-labelledby="t-hechas" style="display: flex; flex-direction: column; gap: 8px">
+<h2 id="t-hechas" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Series registradas</h2>
+<ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+<sc-for list="{{registradas}}" as="h" hint-placeholder-count="1">
+<li style="display: flex; justify-content: space-between; padding: 10px 14px; border-radius: 12px; background: #FBFAF6; border: 1px solid #E6E0D4; font-size: 15px">
+<span style="font-weight: 600">Serie {{h.n}}</span>
+<span style="color: #45423C">{{h.detalle}}</span>
+</li>
+</sc-for>
+</ul>
+</section>
+
+<a href="Resumen.dc.html" style="margin-top: auto; display: flex; align-items: center; justify-content: center; min-height: 52px; border-radius: 16px; border: 1.5px solid #1B1A17; color: #1B1A17; font-size: 16px; font-weight: 600; text-decoration: none">Finalizar sesión</a>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C2410C","options":["#C2410C","#1D4E89","#0F766E","#6D28D9"]},"$preview":{"width":390,"height":900}}'>
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = {
+      reps: 10,
+      peso: 17,
+      rpe: 8,
+      serie: 2,
+      registradas: [{ n: 1, reps: 10, peso: 17, rpe: 7 }]
+    };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#C2410C';
+    const s = this.state;
+    const total = 3;
+    // Escala RPE basada en repeticiones en reserva
+    const descripciones = {
+      10: 'no podías hacer ni una repetición más',
+      9: 'te quedaba 1 repetición',
+      8: 'te quedaban 2 repeticiones',
+      7: 'te quedaban 3 repeticiones',
+      6: 'te quedaban 4 o más repeticiones'
+    };
+    const rpes = [6, 7, 8, 9, 10].map((v) => {
+      const on = s.rpe === v;
+      return {
+        valor: v,
+        etiqueta: 'RPE ' + v,
+        pressed: on ? 'true' : 'false',
+        borde: on ? accent : '#DDD7CB',
+        fondo: on ? accent : '#FFFFFF',
+        texto: on ? '#FFFFFF' : '#1B1A17',
+        pick: () => this.setState({ rpe: v })
+      };
+    });
+    return {
+      accent,
+      reps: s.reps,
+      peso: s.peso,
+      rpe: s.rpe,
+      rpeDesc: descripciones[s.rpe],
+      rpes,
+      serieTexto: 'Serie ' + Math.min(s.serie, total) + ' de ' + total,
+      enCurso: s.serie <= total,
+      completado: s.serie > total,
+      registradas: s.registradas.map((h) => ({ n: h.n, detalle: h.reps + ' reps · ' + h.peso + ' kg · RPE ' + h.rpe })),
+      menosReps: () => this.setState({ reps: Math.max(1, s.reps - 1) }),
+      masReps: () => this.setState({ reps: Math.min(100, s.reps + 1) }),
+      menosPeso: () => this.setState({ peso: Math.max(0, s.peso - 1) }),
+      masPeso: () => this.setState({ peso: Math.min(1000, s.peso + 1) }),
+      guardar: () => this.setState({
+        registradas: s.registradas.concat([{ n: s.serie, reps: s.reps, peso: s.peso, rpe: s.rpe }]),
+        serie: s.serie + 1
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

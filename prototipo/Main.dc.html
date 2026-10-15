@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Configura tu plan</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;background:#F3F0E8;color:#1B1A17}
+button{font-family:inherit;cursor:pointer}
+a{color:#9A3412}a:hover{color:#7C2D12}
+</style>
+</helmet>
+<div style="width: 390px; height: 920px; box-sizing: border-box; padding: 32px 20px 24px; display: flex; flex-direction: column; gap: 24px; background: #F3F0E8; font-family: 'Instrument Sans', system-ui, sans-serif; color: #1B1A17">
+
+<header style="display: flex; flex-direction: column; gap: 6px">
+<p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: {{accent}}">Te damos la bienvenida</p>
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-size: 40px; line-height: 1; font-weight: 700">Configura tu plan</h1>
+<p style="margin: 0; font-size: 15px; line-height: 1.45; color: #5C5850">Con estos datos preparamos tu primera rutina. Podrás cambiarlos cuando quieras.</p>
+</header>
+
+<section aria-labelledby="t-nivel" style="display: flex; flex-direction: column; gap: 10px">
+<h2 id="t-nivel" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">¿Por qué nivel empiezas?</h2>
+<sc-for list="{{niveles}}" as="n" hint-placeholder-count="3">
+<button type="button" onClick="{{n.pick}}" aria-pressed="{{n.pressed}}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 4px; padding: 14px 16px; min-height: 44px; text-align: left; border-radius: 14px; border: 2px solid {{n.borde}}; background: {{n.fondo}}; color: #1B1A17">
+<span style="font-size: 17px; font-weight: 600">{{n.nombre}}</span>
+<span style="font-size: 14px; line-height: 1.4; color: #5C5850">{{n.desc}}</span>
+</button>
+</sc-for>
+</section>
+
+<section aria-labelledby="t-objetivo" style="display: flex; flex-direction: column; gap: 10px">
+<h2 id="t-objetivo" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Tu objetivo principal</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{objetivos}}" as="o" hint-placeholder-count="5">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="min-height: 44px; padding: 0 16px; border-radius: 999px; border: 1.5px solid {{o.borde}}; background: {{o.fondo}}; color: {{o.texto}}; font-size: 15px; font-weight: 500">{{o.nombre}}</button>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="t-dias" style="display: flex; flex-direction: column; gap: 10px">
+<h2 id="t-dias" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Días por semana</h2>
+<div style="display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{dias}}" as="d" hint-placeholder-count="7">
+<button type="button" onClick="{{d.pick}}" aria-pressed="{{d.pressed}}" aria-label="{{d.etiqueta}}" style="height: 48px; border-radius: 12px; border: 1.5px solid {{d.borde}}; background: {{d.fondo}}; color: {{d.texto}}; font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700">{{d.valor}}</button>
+</sc-for>
+</div>
+</section>
+
+<section aria-labelledby="t-modo" style="display: flex; flex-direction: column; gap: 10px">
+<h2 id="t-modo" style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">¿Cómo quieres empezar?</h2>
+<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+<sc-for list="{{modos}}" as="m" hint-placeholder-count="2">
+<button type="button" onClick="{{m.pick}}" aria-pressed="{{m.pressed}}" style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 12px 14px; min-height: 64px; text-align: left; border-radius: 14px; border: 2px solid {{m.borde}}; background: {{m.fondo}}; color: #1B1A17">
+<span style="font-size: 16px; font-weight: 600">{{m.nombre}}</span>
+<span style="font-size: 13px; color: #5C5850">{{m.desc}}</span>
+</button>
+</sc-for>
+</div>
+</section>
+
+<div style="margin-top: auto; display: flex; flex-direction: column">
+<sc-if value="{{sugerida}}" hint-placeholder-val="{{ true }}">
+<a href="Hoy.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 56px; border-radius: 16px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none">Generar mi rutina</a>
+</sc-if>
+<sc-if value="{{manual}}" hint-placeholder-val="{{ false }}">
+<a href="Rutina.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 56px; border-radius: 16px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none">Crear mi rutina</a>
+</sc-if>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C2410C","options":["#C2410C","#1D4E89","#0F766E","#6D28D9"]},"$preview":{"width":390,"height":920}}'>
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = { nivel: 1, objetivo: 2, dias: 3, modo: 'sugerida' };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#C2410C';
+    const s = this.state;
+    const tarjeta = (on) => ({ borde: on ? accent : '#DDD7CB', fondo: on ? '#FFFFFF' : '#FBFAF6', pressed: on ? 'true' : 'false' });
+    const chip = (on) => ({ borde: on ? accent : '#DDD7CB', fondo: on ? accent : '#FFFFFF', texto: on ? '#FFFFFF' : '#1B1A17', pressed: on ? 'true' : 'false' });
+
+    const niveles = [
+      { id: 1, nombre: 'Principiante', desc: 'Empiezas o retomas tras un tiempo sin entrenar.' },
+      { id: 2, nombre: 'Intermedio', desc: 'Entrenas con regularidad y dominas los ejercicios básicos.' },
+      { id: 3, nombre: 'Avanzado', desc: 'Llevas años entrenando y controlas cargas altas con buena técnica.' }
+    ].map((n) => ({ ...n, ...tarjeta(s.nivel === n.id), pick: () => this.setState({ nivel: n.id }) }));
+
+    const objetivos = ['Fuerza', 'Hipertrofia', 'Pérdida de grasa', 'Resistencia', 'Movilidad y salud']
+      .map((nombre, i) => ({ nombre, ...chip(s.objetivo === i + 1), pick: () => this.setState({ objetivo: i + 1 }) }));
+
+    const dias = [1, 2, 3, 4, 5, 6, 7].map((d) => ({
+      valor: d,
+      etiqueta: d === 1 ? '1 día por semana' : d + ' días por semana',
+      ...chip(s.dias === d),
+      pick: () => this.setState({ dias: d })
+    }));
+
+    const modos = [
+      { id: 'sugerida', nombre: 'Rutina sugerida', desc: 'La preparamos por ti' },
+      { id: 'manual', nombre: 'La creo yo', desc: 'Eliges cada ejercicio' }
+    ].map((m) => ({ ...m, ...tarjeta(s.modo === m.id), pick: () => this.setState({ modo: m.id }) }));
+
+    return { accent, niveles, objetivos, dias, modos, sugerida: s.modo === 'sugerida', manual: s.modo === 'manual' };
+  }
+}
+</script>
+</body>
+</html>

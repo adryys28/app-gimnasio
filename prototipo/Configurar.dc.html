@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Configurar ejercicio</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;font-family:'Instrument Sans',system-ui,sans-serif;background:#F3F0E8;color:#1B1A17}
+button{font-family:inherit;cursor:pointer}
+a{color:#9A3412}a:hover{color:#7C2D12}
+</style>
+</helmet>
+<div style="width: 390px; height: 1000px; box-sizing: border-box; padding: 20px 20px 24px; display: flex; flex-direction: column; gap: 18px; background: #F3F0E8; font-family: 'Instrument Sans', system-ui, sans-serif; color: #1B1A17">
+
+<header style="display: flex; align-items: flex-start; gap: 14px">
+<a href="Rutina.dc.html" aria-label="Volver a la rutina" style="flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; border: 1px solid #DDD7CB; display: flex; align-items: center; justify-content: center; color: #1B1A17">
+<svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M15 18l-6-6 6-6"></path></svg></a>
+<div style="display: flex; flex-direction: column; gap: 2px">
+<p style="margin: 0; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: {{accent}}">Configurar ejercicio</p>
+<h1 style="margin: 0; font-family: 'Barlow Condensed', sans-serif; font-size: 34px; line-height: 1.05; font-weight: 700">Remo con mancuerna</h1>
+<p style="margin: 0; font-size: 14px; color: #5C5850">Día A · posición 3</p>
+</div>
+</header>
+
+<section aria-labelledby="t-volumen" style="display: flex; flex-direction: column; padding: 6px 16px 10px; border-radius: 16px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<h2 id="t-volumen" style="margin: 10px 0 4px; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Volumen</h2>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px">
+<span style="font-size: 16px; font-weight: 500">Series</span>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{menosSeries}}" aria-label="Restar una serie" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 64px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{series}}</span>
+<button type="button" onClick="{{masSeries}}" aria-label="Sumar una serie" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; padding: 10px 0; border-top: 1px solid #EDE8DE">
+<span id="t-medida" style="font-size: 16px; font-weight: 500">Se mide por</span>
+<div role="group" aria-labelledby="t-medida" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; padding: 4px; border-radius: 12px; background: #F3F0E8">
+<button type="button" onClick="{{usarReps}}" aria-pressed="{{repsPressed}}" style="min-height: 44px; border-radius: 9px; border: none; background: {{repsFondo}}; color: {{repsTexto}}; font-size: 15px; font-weight: 600">Repeticiones</button>
+<button type="button" onClick="{{usarTiempo}}" aria-pressed="{{tiempoPressed}}" style="min-height: 44px; border-radius: 9px; border: none; background: {{tiempoFondo}}; color: {{tiempoTexto}}; font-size: 15px; font-weight: 600">Tiempo</button>
+</div>
+</div>
+
+<sc-if value="{{esReps}}" hint-placeholder-val="{{ true }}">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; border-top: 1px solid #EDE8DE">
+<span style="font-size: 16px; font-weight: 500">Repeticiones mínimas</span>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{menosRepsMin}}" aria-label="Restar una repetición mínima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 64px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{repsMin}}</span>
+<button type="button" onClick="{{masRepsMin}}" aria-label="Sumar una repetición mínima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; border-top: 1px solid #EDE8DE">
+<span style="font-size: 16px; font-weight: 500">Repeticiones máximas</span>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{menosRepsMax}}" aria-label="Restar una repetición máxima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 64px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{repsMax}}</span>
+<button type="button" onClick="{{masRepsMax}}" aria-label="Sumar una repetición máxima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+</sc-if>
+
+<sc-if value="{{esTiempo}}" hint-placeholder-val="{{ false }}">
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; border-top: 1px solid #EDE8DE">
+<span style="font-size: 16px; font-weight: 500">Duración mínima</span>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{menosDurMin}}" aria-label="Restar 5 segundos a la duración mínima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 64px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{durMin}}</span>
+<button type="button" onClick="{{masDurMin}}" aria-label="Sumar 5 segundos a la duración mínima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; border-top: 1px solid #EDE8DE">
+<span style="font-size: 16px; font-weight: 500">Duración máxima</span>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{menosDurMax}}" aria-label="Restar 5 segundos a la duración máxima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 64px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{durMax}}</span>
+<button type="button" onClick="{{masDurMax}}" aria-label="Sumar 5 segundos a la duración máxima" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+</sc-if>
+</section>
+
+<section aria-labelledby="t-intensidad" style="display: flex; flex-direction: column; padding: 6px 16px 14px; border-radius: 16px; background: #FFFFFF; border: 1px solid #DDD7CB">
+<h2 id="t-intensidad" style="margin: 10px 0 4px; font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #5C5850">Intensidad</h2>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px">
+<div style="display: flex; flex-direction: column; gap: 2px">
+<span style="font-size: 16px; font-weight: 500">Peso objetivo</span>
+<span style="font-size: 13px; color: #5C5850">Se ajusta solo según tu esfuerzo</span>
+</div>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{menosPeso}}" aria-label="Restar un kilo" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 64px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{pesoTxt}}</span>
+<button type="button" onClick="{{masPeso}}" aria-label="Sumar un kilo" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 60px; border-top: 1px solid #EDE8DE">
+<span style="font-size: 16px; font-weight: 500">Descanso</span>
+<div style="display: flex; align-items: center; gap: 6px">
+<button type="button" onClick="{{menosDescanso}}" aria-label="Restar 15 segundos de descanso" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M5 12h14"></path></svg></button>
+<span aria-live="polite" style="min-width: 64px; text-align: center; font-family: 'Barlow Condensed', sans-serif; font-size: 26px; font-weight: 700">{{descansoTxt}}</span>
+<button type="button" onClick="{{masDescanso}}" aria-label="Sumar 15 segundos de descanso" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #DDD7CB; background: #F3F0E8; color: #1B1A17; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round"><path d="M12 5v14M5 12h14"></path></svg></button>
+</div>
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 10px; border-top: 1px solid #EDE8DE">
+<span id="t-rpeobj" style="font-size: 16px; font-weight: 500">Esfuerzo objetivo (RPE)</span>
+<div role="group" aria-labelledby="t-rpeobj" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px">
+<sc-for list="{{rpes}}" as="r" hint-placeholder-count="4">
+<button type="button" onClick="{{r.pick}}" aria-pressed="{{r.pressed}}" aria-label="RPE objetivo {{r.valor}}" style="min-height: 44px; border-radius: 12px; border: 1.5px solid {{r.borde}}; background: {{r.fondo}}; color: {{r.texto}}; font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700">{{r.valor}}</button>
+</sc-for>
+</div>
+<span style="font-size: 13px; color: #5C5850">Si no lo cambias, se usa RPE 7.</span>
+</div>
+</section>
+
+<div style="margin-top: auto; display: flex; flex-direction: column; gap: 6px">
+<a href="Rutina.dc.html" style="display: flex; align-items: center; justify-content: center; min-height: 56px; border-radius: 16px; background: {{accent}}; color: #FFFFFF; font-size: 17px; font-weight: 600; text-decoration: none">Guardar cambios</a>
+<button type="button" style="display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border: none; background: transparent; color: #B42318; font-size: 15px; font-weight: 600">
+<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" style="fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"></path></svg>Quitar de la rutina</button>
+</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"accent":{"editor":"color","default":"#C2410C","options":["#C2410C","#1D4E89","#0F766E","#6D28D9"]},"$preview":{"width":390,"height":1000}}'>
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = { series: 3, tipo: 'R', repsMin: 8, repsMax: 10, durMin: 30, durMax: 45, peso: 17, descanso: 90, rpe: 7 };
+  }
+  renderVals() {
+    const accent = this.props.accent ?? '#C2410C';
+    const s = this.state;
+    const set = (cambio) => () => this.setState(cambio);
+    const mmss = (seg) => Math.floor(seg / 60) + ':' + String(seg % 60).padStart(2, '0');
+    const esReps = s.tipo === 'R';
+
+    const rpes = [6, 7, 8, 9].map((v) => {
+      const on = s.rpe === v;
+      return {
+        valor: v,
+        pressed: on ? 'true' : 'false',
+        borde: on ? accent : '#DDD7CB',
+        fondo: on ? accent : '#FFFFFF',
+        texto: on ? '#FFFFFF' : '#1B1A17',
+        pick: () => this.setState({ rpe: v })
+      };
+    });
+
+    return {
+      accent,
+      series: s.series,
+      esReps,
+      esTiempo: !esReps,
+      repsPressed: esReps ? 'true' : 'false',
+      tiempoPressed: esReps ? 'false' : 'true',
+      repsFondo: esReps ? '#FFFFFF' : 'transparent',
+      tiempoFondo: esReps ? 'transparent' : '#FFFFFF',
+      repsTexto: esReps ? '#1B1A17' : '#5C5850',
+      tiempoTexto: esReps ? '#5C5850' : '#1B1A17',
+      repsMin: s.repsMin,
+      repsMax: s.repsMax,
+      durMin: s.durMin + ' s',
+      durMax: s.durMax + ' s',
+      pesoTxt: s.peso + ' kg',
+      descansoTxt: mmss(s.descanso),
+      rpes,
+      usarReps: set({ tipo: 'R' }),
+      usarTiempo: set({ tipo: 'T' }),
+      // Mismos límites que valida usp_ConfigurarEjercicioRutina
+      menosSeries: set({ series: Math.max(1, s.series - 1) }),
+      masSeries: set({ series: Math.min(20, s.series + 1) }),
+      menosRepsMin: set({ repsMin: Math.max(1, s.repsMin - 1) }),
+      masRepsMin: set({ repsMin: Math.min(s.repsMax, s.repsMin + 1) }),
+      menosRepsMax: set({ repsMax: Math.max(s.repsMin, s.repsMax - 1) }),
+      masRepsMax: set({ repsMax: Math.min(100, s.repsMax + 1) }),
+      menosDurMin: set({ durMin: Math.max(5, s.durMin - 5) }),
+      masDurMin: set({ durMin: Math.min(s.durMax, s.durMin + 5) }),
+      menosDurMax: set({ durMax: Math.max(s.durMin, s.durMax - 5) }),
+      masDurMax: set({ durMax: Math.min(3600, s.durMax + 5) }),
+      menosPeso: set({ peso: Math.max(0, s.peso - 1) }),
+      masPeso: set({ peso: Math.min(1000, s.peso + 1) }),
+      menosDescanso: set({ descanso: Math.max(0, s.descanso - 15) }),
+      masDescanso: set({ descanso: Math.min(600, s.descanso + 15) })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+### Pruebas locales (entorno Development, autenticación con X-Dev-Sub)
+@host = http://localhost:5080
+@sub = dev-prueba
+
+### Catálogo (público)
+GET {{host}}/catalogos
+
+###
+GET {{host}}/ejercicios?nivelId=1&materialId=3
+
+### Perfil
+GET {{host}}/usuarios/me
+X-Dev-Sub: {{sub}}
+
+### Registro de una cuenta nueva
+POST {{host}}/usuarios/me
+X-Dev-Sub: dev-nueva
+Content-Type: application/json
+
+{ "nombre": "Persona de prueba", "email": "nueva@ejemplo.com", "nivelId": 1, "objetivoId": 2, "diasSemana": 3 }
+
+### Rutina activa
+GET {{host}}/rutinas/activa
+X-Dev-Sub: {{sub}}
+
+### Generar rutina sugerida (usa los datos del perfil)
+POST {{host}}/rutinas/sugerida
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{}
+
+### Crear rutina manual
+POST {{host}}/rutinas
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "nombre": "Empuje-tirón", "numDias": 2 }
+
+### Añadir ejercicio a un día (sustituye 1 por un RutinaDiaId real)
+POST {{host}}/dias/1/ejercicios
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "ejercicioId": 2, "series": 4, "repsMin": 8, "repsMax": 12 }
+
+### Pasar un ejercicio a tiempo
+PATCH {{host}}/rutina-ejercicios/1
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "tipoMedida": "T", "duracionSegMin": 30, "duracionSegMax": 45 }
+
+### Iniciar sesión de entrenamiento
+POST {{host}}/sesiones
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "rutinaDiaId": 1 }
+
+### Registrar serie
+POST {{host}}/sesiones/1/series
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{ "ejercicioId": 3, "reps": 10, "pesoKg": 16, "rpe": 7.5 }
+
+### Finalizar y adaptar
+POST {{host}}/sesiones/1/finalizar
+X-Dev-Sub: {{sub}}
+Content-Type: application/json
+
+{}
