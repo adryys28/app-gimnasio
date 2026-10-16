@@ -27,7 +27,9 @@ class _HoyPantallaState extends State<HoyPantalla> {
   }
 
   void _recargar() {
-    setState(() => _rutina = widget.api.rutinaActiva());
+    setState(() {
+      _rutina = widget.api.rutinaActiva();
+    });
   }
 
   Future<void> _generar() async {
