@@ -11,7 +11,7 @@
 
 ## Base de datos
 
-Ejecutar los scripts en orden, de `00` a `11`. El `00` crea la base de datos `App_Gym` y el resto empieza con `USE App_Gym`, así que se crean siempre en ella. Cada script incluye al final una prueba con datos sintéticos.
+Ejecutar los scripts en orden, de `00` a `12`. El `00` crea la base de datos `App_Gym` y el resto empieza con `USE App_Gym`, así que se crean siempre en ella. Cada script incluye al final una prueba con datos sintéticos.
 
 | Script | Contenido |
 |--------|-----------|
@@ -27,6 +27,7 @@ Ejecutar los scripts en orden, de `00` a `11`. El `00` crea la base de datos `Ap
 | 09 | Cardio exterior: GPS, parciales por km, kcal, zonas privadas y RGPD |
 | 10 | Kcal por frecuencia cardiaca (Keytel et al., 2005) |
 | 11 | Planes, suscripciones (Apple, Google, web) y licencias para gimnasios |
+| 12 | Catálogo completo de ejercicios por grupo muscular (reejecutable) |
 
 Requisitos: SQL Server 2017 o posterior (o Azure SQL) y nivel de compatibilidad >= 130.
 
@@ -62,6 +63,8 @@ flutter run -d chrome --dart-define=API_URL=http://localhost:5080
 
 La API permite peticiones desde `localhost` solo en el entorno Development (CORS). Las compilaciones de iOS requieren un Mac con Xcode.
 
+Los mapas usan por defecto los servidores públicos de OpenStreetMap, válidos solo para desarrollo. En producción hay que indicar un proveedor contratado con `--dart-define=TILE_URL=...`.
+
 ## Prototipo
 
 Los archivos `.dc.html` necesitan el entorno de diseño de Claude para mostrarse; abiertos directamente en el navegador no se ven. La versión navegable está en:
@@ -75,7 +78,7 @@ El flujo `.github/workflows/ci.yml` se ejecuta en cada push a `main` y en cada p
 
 - **Compilar API:** `dotnet build` con .NET 10.
 - **Analizar y probar app Flutter:** `flutter analyze` y `flutter test`.
-- **Validar scripts SQL:** arranca SQL Server 2022 en un contenedor y ejecuta los scripts `00` a `11` en orden, incluidas sus pruebas. Falla ante el primer error.
+- **Validar scripts SQL:** arranca SQL Server 2022 en un contenedor y ejecuta los scripts `00` a `12` en orden, incluidas sus pruebas. Falla ante el primer error.
 
 Dependabot revisa cada semana las dependencias de NuGet y de GitHub Actions.
 
@@ -83,7 +86,7 @@ Dependabot revisa cada semana las dependencias de NuGet y de GitHub Actions.
 
 - Notificaciones de compra de Apple, Google y Stripe en la API (verificación de firmas y llamada a usp_ProcesarEventoSuscripcion).
 - Pantallas de actividad de cardio con mapa y de catálogo de ejercicios.
-- App Flutter: registro e inicio de sesión real, cardio con mapa, catálogo y suscripción (ya hechas: Hoy, Sesión y Resumen).
+- App Flutter: grabación de cardio con GPS, inicio de sesión real, datos fisiológicos y compra de la suscripción (ya hechas: Hoy, Sesión, Resumen, Cardio con mapa, Ejercicios y Cuenta).
 - Apps de reloj (watchOS, Wear OS, Garmin).
 - Revisión profesional de los contenidos de ejercicios y de los umbrales de adaptación.
 - EIPD y registro de actividades de tratamiento (RGPD).

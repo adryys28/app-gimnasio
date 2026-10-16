@@ -27,6 +27,7 @@ class _HoyPantallaState extends State<HoyPantalla> {
   }
 
   void _recargar() {
+    // Cuerpo con llaves: con "=>" el callback devolvería el Future y setState lo rechaza
     setState(() {
       _rutina = widget.api.rutinaActiva();
     });

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'api/api_cliente.dart';
-import 'pantallas/hoy_pantalla.dart';
+import 'pantallas/inicio_pantalla.dart';
 import 'tema.dart';
 
 void main() {
@@ -19,7 +19,7 @@ class AppGimnasio extends StatelessWidget {
       title: 'App Gimnasio',
       debugShowCheckedModeBanner: false,
       theme: Tema.claro(),
-      home: HoyPantalla(api: api),
+      home: InicioPantalla(api: api),
     );
   }
 }

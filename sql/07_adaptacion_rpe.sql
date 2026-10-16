@@ -217,8 +217,12 @@ BEGIN
            c.Codigo, a.Accion,
            CAST(CASE c.Codigo
                 WHEN 'CALIBRAR'  THEN N'Primer registro con carga: se fija el peso de referencia.'
-                WHEN 'BAJAR_RPE' THEN CONCAT(N'Esfuerzo medio (RPE ', FORMAT(m.RpeMedio, '0.0', 'es-ES'),
-                                             N') muy por encima del objetivo (', FORMAT(p.RpeObj, '0.0', 'es-ES'), N').')
+                -- Sin FORMAT: depende de CLR y falla si SQL Server no puede crear el AppDomain (error 6517)
+                WHEN 'BAJAR_RPE' THEN CONCAT(N'Esfuerzo medio (RPE ',
+                                             REPLACE(CONVERT(VARCHAR(5), CAST(m.RpeMedio AS DECIMAL(3,1))), '.', ','),
+                                             N') muy por encima del objetivo (',
+                                             REPLACE(CONVERT(VARCHAR(5), CAST(p.RpeObj AS DECIMAL(3,1))), '.', ','),
+                                             N').')
                 WHEN 'BAJAR_MIN' THEN N'Alguna serie no alcanzó el mínimo objetivo.'
                 WHEN 'SUBIR'     THEN N'Máximo del rango alcanzado en todas las series con esfuerzo asumible.'
                 ELSE CASE WHEN m.SeriesHechas < rde.Series

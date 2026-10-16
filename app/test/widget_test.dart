@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:app_gimnasio/api/api_cliente.dart';
+import 'package:app_gimnasio/modelos/actividad.dart';
+import 'package:app_gimnasio/modelos/cuenta.dart';
 import 'package:app_gimnasio/modelos/formato.dart';
 import 'package:app_gimnasio/modelos/rutina.dart';
 import 'package:app_gimnasio/modelos/sesion.dart';
@@ -14,6 +16,18 @@ void main() {
       expect(formatearNumero(17), '17');
       expect(formatearNumero(2.5), '2,5');
       expect(formatearNumero(16.25), '16,25');
+    });
+
+    test('distancias', () {
+      expect(formatearDistancia(2277), '2,28 km');
+      expect(formatearDistancia(1000), '1 km');
+      expect(formatearDistancia(850), '850 m');
+    });
+
+    test('fechas UTC de la API sin zona horaria', () {
+      expect(aFechaLocal('2026-10-15T08:00:00')!.toUtc(), DateTime.utc(2026, 10, 15, 8));
+      expect(aFechaLocal('2026-10-15T08:00:00Z')!.toUtc(), DateTime.utc(2026, 10, 15, 8));
+      expect(aFechaLocal(null), isNull);
     });
 
     test('rangos', () {
@@ -115,6 +129,56 @@ void main() {
             .having((e) => e.mensaje, 'mensaje', contains('Premium'))),
       );
       expect(recibida.headers['X-Dev-Sub'], 'dev-prueba');
+    });
+  });
+
+  group('Cardio y cuenta', () {
+    test('ActividadDetalle: ruta GeoJSON en tramos [lat, lon] y fuente de kcal', () {
+      final a = ActividadDetalle.fromJson({
+        'resumen': {
+          'actividadId': 7, 'tipo': 'Carrera', 'fechaInicio': '2026-10-15T08:00:00',
+          'distanciaM': 2277.0, 'ritmoMedioTxt': '5:03', 'kcal': 175, 'fuenteKcal': 'FC', 'coberturaFcPct': 100.0,
+        },
+        'parciales': [
+          {'km': 1, 'distanciaM': 1000.0, 'duracionSeg': 303.0, 'duracionTxt': '5:03', 'ritmoTxt': '5:03'},
+          {'km': 3, 'distanciaM': 277.0, 'duracionSeg': 84.0, 'duracionTxt': '1:24', 'ritmoTxt': '5:03'},
+        ],
+        'ruta': {
+          'type': 'MultiLineString',
+          'coordinates': [
+            [[-3.6845, 40.4153], [-3.6845, 40.4200]],
+            [[-3.6845, 40.4300]], // tramo de un solo punto: se descarta
+          ],
+        },
+        'rutaPublica': null,
+      });
+
+      expect(a.ruta.length, 1);
+      expect(a.ruta.first.first.latitude, 40.4153);
+      expect(a.ruta.first.first.longitude, -3.6845);
+      expect(a.fuenteKcalTexto, 'por pulsaciones (100 % del tiempo)');
+      expect(a.parciales[0].etiqueta, '1');
+      expect(a.parciales[1].etiqueta, '3 (277 m)');
+    });
+
+    test('EstadoPlan: descripción de las fuentes de acceso', () {
+      final e = EstadoPlan.fromJson({
+        'premium': true,
+        'fuentes': [
+          {'fuente': 'SUSCRIPCION', 'plan': 'PREMIUM', 'plataforma': 'APPLE',
+           'fechaFin': '2026-11-15T10:50:33', 'renovacionAutomatica': true},
+          {'fuente': 'GIMNASIO', 'plan': 'PREMIUM', 'organizacion': 'Gimnasio de prueba', 'fechaFin': '2027-10-15T00:00:00'},
+        ],
+        'funciones': [
+          {'funcion': 'CARDIO_GPS', 'nombre': 'Cardio', 'limite': null},
+        ],
+      });
+
+      expect(e.premium, isTrue);
+      expect(e.fuentes[0].descripcion, startsWith('Suscripción en App Store hasta el '));
+      expect(e.fuentes[0].descripcion, endsWith('(se renueva automáticamente)'));
+      expect(e.fuentes[1].descripcion, startsWith('Licencia de Gimnasio de prueba'));
+      expect(e.funciones.single.limite, isNull);
     });
   });
 }

@@ -37,7 +37,7 @@ public static class CatalogoEndpoints
     }
 
     private static async Task<IResult> BuscarEjercicios(
-        int? nivelId, int? grupoMuscularId, int? materialId, string? texto,
+        int? nivelId, int? grupoMuscularId, int? materialId, string? texto, bool? incluirSecundarios,
         Db db, CancellationToken ct)
     {
         // OPTION (RECOMPILE): consulta con filtros opcionales; evita un plan malo reutilizado
@@ -47,9 +47,11 @@ public static class CatalogoEndpoints
             FROM gym.Ejercicio e
             WHERE e.Activo = 1
               AND (@nivelId IS NULL OR e.NivelMinimoId <= @nivelId)
+              -- Por defecto solo los ejercicios en los que el músculo es principal
               AND (@grupoMuscularId IS NULL OR EXISTS (
                      SELECT 1 FROM gym.EjercicioMusculo em
-                     WHERE em.EjercicioId = e.EjercicioId AND em.GrupoMuscularId = @grupoMuscularId))
+                     WHERE em.EjercicioId = e.EjercicioId AND em.GrupoMuscularId = @grupoMuscularId
+                       AND (em.EsPrincipal = 1 OR @incluirSecundarios = 1)))
               AND (@materialId IS NULL OR EXISTS (
                      SELECT 1 FROM gym.EjercicioMaterial x
                      WHERE x.EjercicioId = e.EjercicioId AND x.MaterialId = @materialId))
@@ -60,7 +62,7 @@ public static class CatalogoEndpoints
 
         texto = string.IsNullOrWhiteSpace(texto) ? null : texto.Trim();
         return Results.Ok(await db.QueryAsync<FilaEjercicio>(sql,
-            new { nivelId, grupoMuscularId, materialId, texto }, ct));
+            new { nivelId, grupoMuscularId, materialId, texto, incluirSecundarios = incluirSecundarios ?? false }, ct));
     }
 
     private static async Task<IResult> ObtenerEjercicio(int id, Db db, CancellationToken ct)
