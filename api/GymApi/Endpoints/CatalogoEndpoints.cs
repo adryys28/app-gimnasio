@@ -43,7 +43,13 @@ public static class CatalogoEndpoints
         // OPTION (RECOMPILE): consulta con filtros opcionales; evita un plan malo reutilizado
         const string sql = """
             SELECT e.EjercicioId, e.Nombre, e.Descripcion, e.VideoUrl, e.MiniaturaUrl,
-                   e.NivelMinimoId, e.TipoMedida
+                   e.NivelMinimoId, e.TipoMedida,
+                   (SELECT STRING_AGG(g.Nombre, '|') FROM gym.EjercicioMusculo em
+                    JOIN gym.GrupoMuscular g ON g.GrupoMuscularId = em.GrupoMuscularId
+                    WHERE em.EjercicioId = e.EjercicioId AND em.EsPrincipal = 1) AS Principales,
+                   (SELECT STRING_AGG(g.Nombre, '|') FROM gym.EjercicioMusculo em
+                    JOIN gym.GrupoMuscular g ON g.GrupoMuscularId = em.GrupoMuscularId
+                    WHERE em.EjercicioId = e.EjercicioId AND em.EsPrincipal = 0) AS Secundarios
             FROM gym.Ejercicio e
             WHERE e.Activo = 1
               AND (@nivelId IS NULL OR e.NivelMinimoId <= @nivelId)
@@ -83,6 +89,11 @@ public static class CatalogoEndpoints
             JOIN gym.Material m ON m.MaterialId = x.MaterialId
             WHERE x.EjercicioId = @id
             ORDER BY m.Nombre;
+
+            SELECT Archivo, Autor, Licencia
+            FROM gym.EjercicioImagen
+            WHERE EjercicioId = @id
+            ORDER BY Orden;
             """;
 
         await using var cn = db.Abrir();
@@ -93,7 +104,8 @@ public static class CatalogoEndpoints
 
         var musculos = (await m.ReadAsync<FilaMusculo>()).AsList();
         var materiales = (await m.ReadAsync<string>()).AsList();
+        var imagenes = (await m.ReadAsync<FilaImagen>()).AsList();
 
-        return Results.Ok(new EjercicioDetalleDto(ejercicio, musculos, materiales));
+        return Results.Ok(new EjercicioDetalleDto(ejercicio, musculos, materiales, imagenes));
     }
 }

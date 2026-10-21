@@ -2,8 +2,12 @@ import 'dart:convert';
 
 import 'package:app_gimnasio/api/api_cliente.dart';
 import 'package:app_gimnasio/modelos/actividad.dart';
+import 'package:app_gimnasio/modelos/catalogo.dart';
 import 'package:app_gimnasio/modelos/cuenta.dart';
+import 'package:app_gimnasio/modelos/entrenamiento.dart';
+import 'package:app_gimnasio/modelos/estadisticas.dart';
 import 'package:app_gimnasio/modelos/formato.dart';
+import 'package:app_gimnasio/modelos/recomendaciones.dart';
 import 'package:app_gimnasio/modelos/rutina.dart';
 import 'package:app_gimnasio/modelos/sesion.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -179,6 +183,134 @@ void main() {
       expect(e.fuentes[0].descripcion, endsWith('(se renueva automáticamente)'));
       expect(e.fuentes[1].descripcion, startsWith('Licencia de Gimnasio de prueba'));
       expect(e.funciones.single.limite, isNull);
+    });
+  });
+
+  group('Diseño V2', () {
+    test('formatos de miles, duración, volumen y signo', () {
+      expect(formatearMiles(2340), '2.340');
+      expect(formatearMiles(1234567), '1.234.567');
+      expect(formatearMiles(85), '85');
+      expect(formatearDuracion(2892), '48:12');
+      expect(formatearDuracion(3930), '1:05:30');
+      expect(formatearVolumen(850), '850 kg');
+      expect(formatearVolumen(4810), '4,8 t');
+      expect(conSigno(1, 'kg'), '+1 kg');
+      expect(conSigno(-5, 's'), '−5 s');
+    });
+
+    test('ResumenInicio y valor de los ajustes recientes', () {
+      final r = ResumenInicio.fromJson({
+        'resumen': {
+          'nombre': 'Adrián Poveda', 'objetivoSemana': 3, 'sesionesSemana': 2,
+          'volumenSemanaKg': 4810.0, 'volumenSemanaAnteriorKg': 4300.0, 'rachaDias': 12,
+        },
+        'volumenSemana': [
+          for (var i = 0; i < 7; i++) {'diaSemana': i, 'fecha': '2026-10-12T00:00:00', 'volumenKg': i == 2 ? 2340.0 : 0.0},
+        ],
+        'ajustes': [
+          {'ejercicio': 'Remo con mancuerna', 'accion': 'SUBIR', 'fecha': '2026-10-15T09:00:00', 'pesoAntes': 16.0, 'pesoDespues': 17.0},
+          {'ejercicio': 'Flexiones', 'accion': 'SUBIR', 'fecha': '2026-10-15T09:00:00', 'repsMinAntes': 10, 'repsMinDespues': 12},
+          {'ejercicio': 'Plancha frontal', 'accion': 'BAJAR', 'fecha': '2026-10-15T09:00:00', 'durMinAntes': 30, 'durMinDespues': 25},
+        ],
+      });
+      expect(r.nombreCorto, 'Adrián');
+      expect(r.volumenDias.length, 7);
+      expect(r.variacionVolumenPct, 12);
+      expect(r.ajustes.map((a) => a.valor).toList(), ['+1 kg', '+2 reps', '−5 s']);
+    });
+  });
+
+  group('Cuestionario, IA y tipos de serie', () {
+    test('RecomendacionDias y ResultadoRutina', () {
+      final rec = RecomendacionDias.fromJson({
+        'recomendado': 4, 'minimo': 3, 'maximo': 4, 'motivo': 'Texto', 'fuente': 'ACSM (2009)',
+      });
+      expect(rec.recomendado, 4);
+
+      final res = ResultadoRutina.fromJson({
+        'generadaConIa': true,
+        'rutina': {
+          'rutinaId': 9, 'nombre': 'Torso/Pierna', 'origen': 'I', 'activa': true,
+          'descripcion': 'Cuatro días alternando torso y pierna.',
+          'dias': [
+            {'rutinaDiaId': 1, 'orden': 1, 'nombre': 'Torso A', 'musculos': ['Pecho', 'Espalda'], 'ejercicios': []},
+          ],
+        },
+      });
+      expect(res.generadaConIa, isTrue);
+      expect(res.rutina.generadaConIa, isTrue);
+      expect(res.rutina.descripcion, startsWith('Cuatro días'));
+      expect(res.rutina.dias.single.musculos, ['Pecho', 'Espalda']);
+    });
+
+    test('Opciones del cuestionario coinciden con los Id de la base de datos', () {
+      expect(nivelesCuestionario.map((o) => o.id), [1, 2, 3]);
+      // gym.Objetivo: 1 Fuerza, 2 Hipertrofia, 3 Pérdida de grasa
+      expect({for (final o in objetivosCuestionario) o.titulo: o.id},
+          {'Perder grasa': 3, 'Ganar fuerza': 1, 'Ganar músculo': 2});
+    });
+
+    test('Tipos de serie', () {
+      expect(TipoSerie.todos.map((t) => t.codigo), ['N', 'C', 'F', 'D', 'R']);
+      expect(TipoSerie.porCodigo('D').nombre, 'Dropset');
+      expect(TipoSerie.porCodigo('X').codigo, 'N');
+    });
+  });
+
+  group('Recomendaciones de sesión', () {
+    EjercicioRutina ej({bool compuesto = true, String tipo = 'R', double? peso = 60}) => EjercicioRutina(
+          rutinaDiaEjercicioId: 1, orden: 1, ejercicioId: 1, nombre: 'Press de banca con barra',
+          series: 3, tipoMedida: tipo, descansoSeg: 120, repsMin: 6, repsMax: 10,
+          pesoObjetivoKg: peso, compuesto: compuesto,
+        );
+
+    test('calentamiento: 2 series en el primer compuesto, 1 en los siguientes, ninguna en aislamiento', () {
+      final primero = calentamientoRecomendado(ej(), hayCompuestoAnterior: false)!;
+      expect(primero.series.map((s) => s.texto), ['30 kg × 10', '45 kg × 5']);
+      expect(calentamientoRecomendado(ej(), hayCompuestoAnterior: true)!.texto, '36 kg × 6');
+      expect(calentamientoRecomendado(ej(peso: null), hayCompuestoAnterior: false)!.texto, '10 reps ligeras · 5 reps ligeras');
+      expect(calentamientoRecomendado(ej(compuesto: false), hayCompuestoAnterior: false), isNull);
+      expect(calentamientoRecomendado(ej(tipo: 'T'), hayCompuestoAnterior: false), isNull);
+    });
+
+    test('tipo de serie recomendado', () {
+      String tipo(int nivel, int objetivo, bool compuesto, int serie) => recomendarTipoSerie(
+            nivel: nivel, objetivo: objetivo, compuesto: compuesto, porTiempo: false, serie: serie, totalSeries: 3,
+          ).$1;
+      expect(tipo(1, 2, false, 3), 'N'); // principiante
+      expect(tipo(3, 1, false, 3), 'N'); // fuerza
+      expect(tipo(3, 2, true, 3), 'N');  // compuesto
+      expect(tipo(2, 2, false, 2), 'N'); // no es la última
+      expect(tipo(2, 2, false, 3), 'F'); // intermedio, músculo, última de aislamiento
+      expect(tipo(3, 2, false, 3), 'D'); // avanzado
+      expect(tipo(2, 3, false, 3), 'R'); // perder grasa
+    });
+  });
+
+  group('Músculos por ejercicio', () {
+    test('texto de músculos principales y secundarios', () {
+      expect(textoMusculos(['Pecho'], ['Tríceps', 'Hombros']), 'Pecho · también Tríceps y Hombros');
+      expect(textoMusculos(['Espalda'], ['Bíceps']), 'Espalda · también Bíceps');
+      expect(textoMusculos(['Bíceps'], []), 'Bíceps');
+      expect(textoMusculos([], ['Core']), '');
+    });
+
+    test('catálogo y rutina leen los grupos musculares', () {
+      final e = EjercicioResumen.fromJson({
+        'ejercicioId': 1, 'nombre': 'Press de banca con barra', 'nivelMinimoId': 2, 'tipoMedida': 'R',
+        'principales': 'Pecho', 'secundarios': 'Tríceps|Hombros',
+      });
+      expect(e.principales, ['Pecho']);
+      expect(e.secundarios, ['Tríceps', 'Hombros']);
+
+      final r = EjercicioRutina.fromJson({
+        'rutinaDiaEjercicioId': 1, 'orden': 1, 'ejercicioId': 1, 'nombre': 'Remo con barra',
+        'series': 3, 'tipoMedida': 'R', 'descansoSeg': 90,
+        'musculosPrincipales': ['Espalda'], 'musculosSecundarios': ['Bíceps', 'Lumbares'],
+      });
+      expect(r.principales, ['Espalda']);
+      expect(r.secundarios, ['Bíceps', 'Lumbares']);
     });
   });
 }

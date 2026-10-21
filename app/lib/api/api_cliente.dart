@@ -6,6 +6,8 @@ import '../config.dart';
 import '../modelos/actividad.dart';
 import '../modelos/catalogo.dart';
 import '../modelos/cuenta.dart';
+import '../modelos/entrenamiento.dart';
+import '../modelos/estadisticas.dart';
 import '../modelos/rutina.dart';
 import '../modelos/sesion.dart';
 
@@ -54,6 +56,9 @@ class ApiCliente {
 
   Future<dynamic> _post(String ruta, [Object? cuerpo]) async => _procesar(
       await _cliente.post(Uri.parse('$_baseUrl$ruta'), headers: _cabeceras, body: jsonEncode(cuerpo ?? {})));
+
+  Future<dynamic> _patch(String ruta, Object cuerpo) async => _procesar(
+      await _cliente.patch(Uri.parse('$_baseUrl$ruta'), headers: _cabeceras, body: jsonEncode(cuerpo)));
 
   dynamic _procesar(http.Response r) {
     final texto = utf8.decode(r.bodyBytes);
@@ -105,6 +110,8 @@ class ApiCliente {
     int? duracionSeg,
     double? pesoKg,
     double? rpe,
+    String tipoSerie = 'N',
+    String? notas,
   }) async {
     await _post('/sesiones/$sesionId/series', {
       'ejercicioId': ejercicioId,
@@ -112,6 +119,8 @@ class ApiCliente {
       'duracionSeg': duracionSeg,
       'pesoKg': pesoKg,
       'rpe': rpe,
+      'tipoSerie': tipoSerie,
+      'notas': notas,
     });
   }
 
@@ -163,5 +172,34 @@ class ApiCliente {
       'otorgado': otorgado,
       'versionTexto': Config.versionConsentimiento,
     });
+  }
+
+  /* ---------- Estadísticas (diseño V2) ---------- */
+
+  Future<ResumenInicio> resumenInicio() async =>
+      ResumenInicio.fromJson(await _get('/inicio/resumen') as Map<String, dynamic>);
+
+  Future<ResumenSesion> resumenSesion(int sesionId) async =>
+      ResumenSesion.fromJson(await _get('/sesiones/$sesionId/resumen') as Map<String, dynamic>);
+
+  /* ---------- Cuestionario inicial y rutina personalizada ---------- */
+
+  Future<RecomendacionDias> recomendacionDias({required int nivelId, required int objetivoId}) async =>
+      RecomendacionDias.fromJson(await _get('/entrenamiento/recomendacion-dias', {
+        'nivelId': '$nivelId',
+        'objetivoId': '$objetivoId',
+      }) as Map<String, dynamic>);
+
+  /// Guarda las respuestas y genera la rutina (generador de reglas; IA solo si está habilitada en la API).
+  Future<ResultadoRutina> crearRutinaCuestionario({required int nivelId, required int objetivoId, required int diasSemana}) async =>
+      ResultadoRutina.fromJson(await _post('/rutinas/cuestionario', {
+        'nivelId': nivelId,
+        'objetivoId': objetivoId,
+        'diasSemana': diasSemana,
+      }) as Map<String, dynamic>);
+
+  /// Cambia el número de series de un ejercicio en la rutina (para próximas sesiones).
+  Future<void> configurarSeries(int rutinaDiaEjercicioId, int series) async {
+    await _patch('/rutina-ejercicios/$rutinaDiaEjercicioId', {'series': series});
   }
 }

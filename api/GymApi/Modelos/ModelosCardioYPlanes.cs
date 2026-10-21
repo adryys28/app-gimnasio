@@ -195,3 +195,94 @@ public static partial class Geo
         return tramos.Length == 0 ? null : new { type = "MultiLineString", coordinates = tramos };
     }
 }
+
+/* =====================================================================
+   Estadísticas (script 13)
+   ===================================================================== */
+
+public sealed class FilaResumenInicio
+{
+    public string Nombre { get; set; } = "";
+    public int ObjetivoSemana { get; set; }
+    public int SesionesSemana { get; set; }
+    public decimal VolumenSemanaKg { get; set; }
+    public decimal VolumenSemanaAnteriorKg { get; set; }
+    public int RachaDias { get; set; }
+}
+
+public sealed class FilaVolumenDia
+{
+    public int DiaSemana { get; set; }   // 0 = lunes
+    public DateTime Fecha { get; set; }
+    public decimal VolumenKg { get; set; }
+}
+
+public sealed class FilaAjusteReciente
+{
+    public string Ejercicio { get; set; } = "";
+    public string Accion { get; set; } = "";
+    public DateTime Fecha { get; set; }
+    public decimal? PesoAntes { get; set; }
+    public decimal? PesoDespues { get; set; }
+    public byte? RepsMinAntes { get; set; }
+    public byte? RepsMinDespues { get; set; }
+    public short? DurMinAntes { get; set; }
+    public short? DurMinDespues { get; set; }
+}
+
+public sealed class FilaResumenSesion
+{
+    public string NombreDia { get; set; } = "";
+    public DateTime FechaInicio { get; set; }
+    public int? DuracionSeg { get; set; }
+    public int Series { get; set; }
+    public decimal VolumenKg { get; set; }
+    public decimal? RpeMedio { get; set; }
+}
+
+public sealed class FilaRecord
+{
+    public string Ejercicio { get; set; } = "";
+    public decimal PesoKg { get; set; }
+    public byte? Reps { get; set; }
+    public decimal PesoAnteriorKg { get; set; }
+}
+
+public sealed class FilaProgresion
+{
+    public string Ejercicio { get; set; } = "";
+    public DateTime Fecha { get; set; }
+    public decimal PesoKg { get; set; }
+}
+
+/* =====================================================================
+   Rutinas con IA (script 14)
+   ===================================================================== */
+
+/// <summary>Respuestas del cuestionario inicial. ObjetivoId: 1 fuerza, 2 músculo, 3 perder grasa.</summary>
+public sealed record CuestionarioDto(byte NivelId, byte ObjetivoId, byte DiasSemana);
+
+public sealed record RecomendacionDiasDto(int Recomendado, int Minimo, int Maximo, string Motivo, string Fuente);
+
+/// <summary>Ejercicio del catálogo resumido para enviarlo a la IA.</summary>
+public sealed class FilaCatalogoIa
+{
+    public int EjercicioId { get; set; }
+    public string Nombre { get; set; } = "";
+    public string TipoMedida { get; set; } = "R";
+    public string? Musculos { get; set; }
+    public string? Materiales { get; set; }
+}
+
+/// <summary>Ejercicio del catálogo para el generador de reglas.</summary>
+public sealed class FilaCatalogoReglas
+{
+    public int EjercicioId { get; set; }
+    public string Nombre { get; set; } = "";
+    public byte NivelMinimoId { get; set; }
+    public string TipoMedida { get; set; } = "R";
+    public string Principales { get; set; } = "";   // grupos principales separados por '|'
+    public int NumMusculos { get; set; }            // principales + secundarios
+
+    public string[] GruposPrincipales => Principales.Split('|', StringSplitOptions.RemoveEmptyEntries);
+}

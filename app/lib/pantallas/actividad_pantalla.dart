@@ -121,7 +121,7 @@ class _Dato extends StatelessWidget {
       width: 165,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Tema.tarjeta,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Tema.borde),
       ),

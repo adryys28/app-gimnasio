@@ -29,6 +29,59 @@ class EjercicioPantalla extends StatelessWidget {
   }
 }
 
+/// Ilustraciones del ejercicio sobre fondo blanco (dibujos de línea negros, sin alterar)
+/// con la atribución que exige su licencia, en pequeño.
+class IlustracionEjercicio extends StatelessWidget {
+  const IlustracionEjercicio({super.key, required this.imagenes, required this.nombre});
+
+  final List<ImagenEjercicio> imagenes;
+  final String nombre;
+
+  @override
+  Widget build(BuildContext context) {
+    final autoria = imagenes.first;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Semantics(
+          label: 'Ilustración de $nombre',
+          image: true,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: ColoredBox(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Row(
+                  children: [
+                    for (final img in imagenes)
+                      Expanded(
+                        child: AspectRatio(
+                          aspectRatio: 0.93,
+                          child: Image.asset(
+                            img.ruta,
+                            fit: BoxFit.contain,
+                            excludeFromSemantics: true,
+                            errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          'Ilustración: ${autoria.autor} · ${autoria.licencia}',
+          style: const TextStyle(fontSize: 10, color: Tema.secundario),
+        ),
+      ],
+    );
+  }
+}
+
 class _Contenido extends StatelessWidget {
   const _Contenido({required this.detalle});
 
@@ -47,26 +100,11 @@ class _Contenido extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(20),
       children: [
-        // La reproducción de vídeo se añadirá cuando estén grabados los vídeos
-        AspectRatio(
-          aspectRatio: 16 / 9,
-          child: Container(
-            decoration: BoxDecoration(color: Tema.tinta, borderRadius: BorderRadius.circular(16)),
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.play_circle_outline, color: Colors.white, size: 48),
-                const SizedBox(height: 8),
-                Text(
-                  e.videoUrl == null ? 'Vídeo de técnica pendiente' : 'Vídeo de técnica',
-                  style: const TextStyle(color: Colors.white),
-                ),
-              ],
-            ),
-          ),
-        ),
-        const SizedBox(height: 16),
+        // Ilustración del ejercicio; si no tiene, no se muestra nada
+        if (detalle.imagenes.isNotEmpty) ...[
+          IlustracionEjercicio(imagenes: detalle.imagenes, nombre: e.nombre),
+          const SizedBox(height: 16),
+        ],
         Text(e.nombre, style: textos.headlineSmall?.copyWith(fontWeight: FontWeight.w700)),
         const SizedBox(height: 8),
         Wrap(

@@ -12,7 +12,7 @@ public sealed class ManejadorErroresSql(IProblemDetailsService problemas) : IExc
 {
     // "No existe o no pertenece al usuario": 404 para no revelar recursos ajenos
     private static readonly HashSet<int> NoEncontrado =
-        [50001, 50010, 50020, 50021, 50030, 50040, 50063, 50065, 50071, 50072, 50098, 50101];
+        [50001, 50010, 50020, 50021, 50030, 50040, 50063, 50065, 50071, 50072, 50098, 50101, 50120];
 
     // Falta un permiso, un consentimiento o el plan necesario
     private static readonly HashSet<int> Prohibido = [50074, 50076, 50077, 50078, 50084, 50096];

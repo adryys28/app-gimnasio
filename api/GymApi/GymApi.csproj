@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>GymApi</RootNamespace>
+    <!-- Secretos de desarrollo (dotnet user-secrets): clave de la API de IA, etc. -->
+    <UserSecretsId>app-gimnasio-api</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
