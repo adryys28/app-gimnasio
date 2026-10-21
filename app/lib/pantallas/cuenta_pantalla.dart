@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../api/api_cliente.dart';
 import '../modelos/cuenta.dart';
 import '../tema.dart';
+import 'cuestionario_pantalla.dart';
+import 'inicio_pantalla.dart';
 
 /// Plan contratado y consentimientos de privacidad (RGPD).
 class CuentaPantalla extends StatefulWidget {
@@ -131,6 +133,26 @@ class _CuentaPantallaState extends State<CuentaPantalla> {
                           ),
                         ),
                     ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Card(
+                child: ListTile(
+                  leading: const Icon(Icons.auto_awesome, color: Tema.acento),
+                  title: const Text('Rehacer mi plan'),
+                  subtitle: const Text('Responde de nuevo al cuestionario y genera otra rutina.'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.of(context).push(
+                    MaterialPageRoute<void>(
+                      builder: (_) => CuestionarioPantalla(
+                        api: widget.api,
+                        alTerminar: () => Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute<void>(builder: (_) => InicioPantalla(api: widget.api)),
+                          (_) => false,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),

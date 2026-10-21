@@ -47,6 +47,8 @@ class EjercicioResumen {
     this.descripcion,
     this.erroresComunes,
     this.videoUrl,
+    this.principales = const [],
+    this.secundarios = const [],
   });
 
   final int ejercicioId;
@@ -56,6 +58,11 @@ class EjercicioResumen {
   final String? descripcion;
   final String? erroresComunes;
   final String? videoUrl;
+  final List<String> principales;
+  final List<String> secundarios;
+
+  static List<String> _grupos(dynamic v) =>
+      (v as String?)?.split('|').where((g) => g.isNotEmpty).toList() ?? const [];
 
   String get medidaTexto => tipoMedida == 'T' ? 'Por tiempo' : 'Por repeticiones';
 
@@ -67,6 +74,8 @@ class EjercicioResumen {
         descripcion: j['descripcion'] as String?,
         erroresComunes: j['erroresComunes'] as String?,
         videoUrl: j['videoUrl'] as String?,
+        principales: _grupos(j['principales']),
+        secundarios: _grupos(j['secundarios']),
       );
 }
 
@@ -82,15 +91,38 @@ class MusculoEjercicio {
 
 /// Respuesta de GET /ejercicios/{id}.
 class EjercicioDetalle {
-  const EjercicioDetalle({required this.ejercicio, required this.musculos, required this.materiales});
+  const EjercicioDetalle({required this.ejercicio, required this.musculos, required this.materiales, this.imagenes = const []});
 
   final EjercicioResumen ejercicio;
   final List<MusculoEjercicio> musculos;
   final List<String> materiales;
 
+  /// Ilustraciones del ejercicio (vacío si no tiene).
+  final List<ImagenEjercicio> imagenes;
+
   factory EjercicioDetalle.fromJson(Map<String, dynamic> j) => EjercicioDetalle(
         ejercicio: EjercicioResumen.fromJson(j['ejercicio'] as Map<String, dynamic>),
         musculos: (j['musculos'] as List).map((m) => MusculoEjercicio.fromJson(m as Map<String, dynamic>)).toList(),
         materiales: (j['materiales'] as List).cast<String>(),
+        imagenes: [
+          for (final i in (j['imagenes'] as List? ?? const [])) ImagenEjercicio.fromJson(i as Map<String, dynamic>),
+        ],
+      );
+}
+
+/// Ilustración de un ejercicio incluida en la app (assets/ejercicios) con su autoría y licencia.
+class ImagenEjercicio {
+  const ImagenEjercicio({required this.archivo, required this.autor, required this.licencia});
+
+  final String archivo;
+  final String autor;
+  final String licencia;
+
+  String get ruta => 'assets/ejercicios/$archivo';
+
+  factory ImagenEjercicio.fromJson(Map<String, dynamic> j) => ImagenEjercicio(
+        archivo: j['archivo'] as String,
+        autor: j['autor'] as String,
+        licencia: j['licencia'] as String,
       );
 }

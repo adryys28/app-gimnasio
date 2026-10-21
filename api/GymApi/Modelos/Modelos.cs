@@ -21,6 +21,16 @@ public sealed class FilaEjercicio
     public string? MiniaturaUrl { get; set; }
     public byte NivelMinimoId { get; set; }
     public string TipoMedida { get; set; } = "R";
+    public string? Principales { get; set; }  // grupos separados por '|'
+    public string? Secundarios { get; set; }
+}
+
+/// <summary>Ilustración del ejercicio (script 17). El archivo va incluido en la app (assets/ejercicios).</summary>
+public sealed class FilaImagen
+{
+    public string Archivo { get; set; } = "";
+    public string Autor { get; set; } = "";
+    public string Licencia { get; set; } = "";
 }
 
 public sealed class FilaMusculo
@@ -57,6 +67,9 @@ public sealed class FilaRutinaDetalle
     public string Rutina { get; set; } = "";
     public string Origen { get; set; } = "";
     public bool Activa { get; set; }
+    public string? Descripcion { get; set; }
+    public byte NivelId { get; set; }
+    public byte? ObjetivoId { get; set; }
     public int RutinaDiaId { get; set; }
     public byte Dia { get; set; }
     public string NombreDia { get; set; } = "";
@@ -75,6 +88,9 @@ public sealed class FilaRutinaDetalle
     public decimal? PesoObjetivoKg { get; set; }
     public short? DescansoSeg { get; set; }
     public decimal? RpeObjetivo { get; set; }
+    public int? NumMusculos { get; set; }
+    public string? Principales { get; set; }  // grupos separados por '|'
+    public string? Secundarios { get; set; }
 }
 
 /// <summary>Resumen que devuelve usp_AdaptarRutinaPorSesion al finalizar una sesión.</summary>
@@ -120,18 +136,23 @@ public sealed class FilaAjuste
    ===================================================================== */
 
 public sealed record EjercicioDetalleDto(
-    FilaEjercicio Ejercicio, IReadOnlyList<FilaMusculo> Musculos, IReadOnlyList<string> Materiales);
+    FilaEjercicio Ejercicio, IReadOnlyList<FilaMusculo> Musculos, IReadOnlyList<string> Materiales,
+    IReadOnlyList<FilaImagen> Imagenes);
 
-public sealed record RutinaDto(int RutinaId, string Nombre, string Origen, bool Activa, IReadOnlyList<DiaDto> Dias);
+/// <summary>Origen: S sugerida, M manual, I generada con IA. Descripcion: explicación de la IA.</summary>
+public sealed record RutinaDto(int RutinaId, string Nombre, string Origen, bool Activa, IReadOnlyList<DiaDto> Dias,
+    string? Descripcion = null, byte? NivelId = null, byte? ObjetivoId = null);
 
-public sealed record DiaDto(int RutinaDiaId, byte Orden, string Nombre, IReadOnlyList<EjercicioRutinaDto> Ejercicios);
+/// <summary>Musculos: grupos musculares principales que trabaja el día (para la silueta de la app).</summary>
+public sealed record DiaDto(int RutinaDiaId, byte Orden, string Nombre, IReadOnlyList<EjercicioRutinaDto> Ejercicios, IReadOnlyList<string> Musculos);
 
 public sealed record EjercicioRutinaDto(
     int RutinaDiaEjercicioId, byte Orden, int EjercicioId, string Nombre,
     string? VideoUrl, string? MiniaturaUrl,
     byte Series, string TipoMedida,
     byte? RepsMin, byte? RepsMax, short? DuracionSegMin, short? DuracionSegMax,
-    decimal? PesoObjetivoKg, short DescansoSeg, decimal? RpeObjetivo);
+    decimal? PesoObjetivoKg, short DescansoSeg, decimal? RpeObjetivo, bool Compuesto = false,
+    IReadOnlyList<string>? MusculosPrincipales = null, IReadOnlyList<string>? MusculosSecundarios = null);
 
 /* =====================================================================
    Peticiones (JSON). Los campos opcionales a null mantienen el valor
@@ -167,7 +188,8 @@ public sealed record PesoDto(decimal? PesoKg);
 
 public sealed record SesionNuevaDto(int? RutinaDiaId);
 
-public sealed record SerieDto(int EjercicioId, byte? Reps, short? DuracionSeg, decimal? PesoKg, decimal? Rpe);
+/// <summary>TipoSerie: N normal, C calentamiento, F al fallo, D dropset, R rest-pause.</summary>
+public sealed record SerieDto(int EjercicioId, byte? Reps, short? DuracionSeg, decimal? PesoKg, decimal? Rpe, string? TipoSerie = null, string? Notas = null);
 
 public sealed record FinalizarDto(string? Notas, bool Adaptar = true);
 
@@ -177,7 +199,7 @@ public sealed record FinalizarDto(string? Notas, bool Adaptar = true);
 
 public static class Mapeo
 {
-    public static List<RutinaDto> Agrupar(IEnumerable<FilaRutinaDetalle> filas) =>
+    public static List<RutinaDto> Agrupar(IEnumerable<FilaRutinaDetalle> filas, ILookup<int, string>? musculos = null) =>
         filas.GroupBy(f => f.RutinaId)
              .Select(r =>
              {
@@ -193,12 +215,17 @@ public static class Mapeo
                                       f.VideoUrl, f.MiniaturaUrl,
                                       f.Series!.Value, f.TipoMedida!,
                                       f.RepsMin, f.RepsMax, f.DuracionSegMin, f.DuracionSegMax,
-                                      f.PesoObjetivoKg, f.DescansoSeg!.Value, f.RpeObjetivo))
-                                  .ToList()))
+                                      f.PesoObjetivoKg, f.DescansoSeg!.Value, f.RpeObjetivo, f.NumMusculos >= 2,
+                                      Lista(f.Principales), Lista(f.Secundarios)))
+                                  .ToList(),
+                                 musculos is null ? [] : musculos[d.Key].ToList()))
                              .ToList();
-                 return new RutinaDto(cab.RutinaId, cab.Rutina, cab.Origen, cab.Activa, dias);
+                 return new RutinaDto(cab.RutinaId, cab.Rutina, cab.Origen, cab.Activa, dias, cab.Descripcion, cab.NivelId, cab.ObjetivoId);
              })
              .ToList();
+
+    private static string[] Lista(string? valores) =>
+        valores?.Split('|', StringSplitOptions.RemoveEmptyEntries) ?? [];
 
     /// <summary>Evita que SQL Server trunque en silencio un valor como "RT" a CHAR(1).</summary>
     public static IResult? ValidarTipoMedida(string? tipo) =>

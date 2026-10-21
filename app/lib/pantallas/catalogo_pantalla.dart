@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 
 import '../api/api_cliente.dart';
 import '../modelos/catalogo.dart';
+import '../modelos/formato.dart';
 import '../tema.dart';
+import '../widgets/silueta.dart';
 import 'ejercicio_pantalla.dart';
 
 /// Catálogo de ejercicios con buscador y filtros por músculo y material.
@@ -132,7 +134,16 @@ class _CatalogoPantallaState extends State<CatalogoPantalla> {
                     return Card(
                       child: ListTile(
                         title: Text(e.nombre, style: const TextStyle(fontWeight: FontWeight.w600)),
-                        subtitle: Text([nivel, e.medidaTexto].where((t) => t.isNotEmpty).join(' · ')),
+                        leading: Silueta(musculos: e.principales, secundarios: e.secundarios, ancho: 22),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            if (e.principales.isNotEmpty)
+                              Text(textoMusculos(e.principales, e.secundarios),
+                                  style: const TextStyle(color: Tema.acento, fontSize: 12)),
+                            Text([nivel, e.medidaTexto].where((t) => t.isNotEmpty).join(' · ')),
+                          ],
+                        ),
                         trailing: const Icon(Icons.chevron_right, color: Tema.secundario),
                         onTap: () => Navigator.of(context).push(
                           MaterialPageRoute<void>(

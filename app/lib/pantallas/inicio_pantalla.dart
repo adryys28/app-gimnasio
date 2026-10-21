@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../api/api_cliente.dart';
+import '../widgets/ui.dart';
 import 'actividades_pantalla.dart';
 import 'catalogo_pantalla.dart';
 import 'cuenta_pantalla.dart';
 import 'hoy_pantalla.dart';
 
-/// Navegación inferior: Hoy, Cardio, Ejercicios y Cuenta.
+/// Navegación principal con barra flotante: Hoy, Cardio, Ejercicios y Perfil.
 class InicioPantalla extends StatefulWidget {
   const InicioPantalla({super.key, required this.api});
 
@@ -33,24 +34,7 @@ class _InicioPantallaState extends State<InicioPantalla> {
           CuentaPantalla(api: api),
         ],
       ),
-      bottomNavigationBar: NavigationBar(
-        selectedIndex: _indice,
-        onDestinationSelected: (i) => setState(() => _indice = i),
-        destinations: const [
-          NavigationDestination(icon: Icon(Icons.today_outlined), selectedIcon: Icon(Icons.today), label: 'Hoy'),
-          NavigationDestination(
-            icon: Icon(Icons.directions_run_outlined),
-            selectedIcon: Icon(Icons.directions_run),
-            label: 'Cardio',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.fitness_center_outlined),
-            selectedIcon: Icon(Icons.fitness_center),
-            label: 'Ejercicios',
-          ),
-          NavigationDestination(icon: Icon(Icons.person_outline), selectedIcon: Icon(Icons.person), label: 'Cuenta'),
-        ],
-      ),
+      bottomNavigationBar: NavFlotante(indice: _indice, alCambiar: (i) => setState(() => _indice = i)),
     );
   }
 }

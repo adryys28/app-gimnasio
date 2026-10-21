@@ -52,8 +52,9 @@ public static class RutinaEndpoints
             "SELECT * FROM gym.vw_RutinaDetalle WHERE UsuarioId = @uid AND Activa = 1",
             new { uid = http.UsuarioId() }, ct);
 
-        var rutina = Mapeo.Agrupar(filas).FirstOrDefault();
-        return rutina is null ? Results.NotFound() : Results.Ok(rutina);
+        var rutinaId = filas.FirstOrDefault()?.RutinaId;
+        if (rutinaId is null) return Results.NotFound();
+        return Results.Ok(Mapeo.Agrupar(filas, await MusculosAsync(db, rutinaId.Value, ct)).FirstOrDefault());
     }
 
     private static async Task<IResult> Obtener(int rutinaId, HttpContext http, Db db, CancellationToken ct)
@@ -196,12 +197,26 @@ public static class RutinaEndpoints
     private static async Task<IResult> CreadaAsync(Db db, int rutinaId, int uid, CancellationToken ct) =>
         Results.Created($"/rutinas/{rutinaId}", await CargarRutinaAsync(db, rutinaId, uid, ct));
 
-    private static async Task<RutinaDto?> CargarRutinaAsync(Db db, int rutinaId, int uid, CancellationToken ct)
+    internal static async Task<RutinaDto?> CargarRutinaAsync(Db db, int rutinaId, int uid, CancellationToken ct)
     {
         var filas = await db.QueryAsync<FilaRutinaDetalle>(
             "SELECT * FROM gym.vw_RutinaDetalle WHERE RutinaId = @rutinaId AND UsuarioId = @uid",
             new { rutinaId, uid }, ct);
-        return Mapeo.Agrupar(filas).FirstOrDefault();
+        return Mapeo.Agrupar(filas, await MusculosAsync(db, rutinaId, ct)).FirstOrDefault();
+    }
+
+    /// <summary>Grupos musculares principales de cada día de la rutina.</summary>
+    private static async Task<ILookup<int, string>> MusculosAsync(Db db, int rutinaId, CancellationToken ct)
+    {
+        var filas = await db.QueryAsync<(int RutinaDiaId, string Nombre)>("""
+            SELECT DISTINCT rde.RutinaDiaId, g.Nombre
+            FROM gym.RutinaDiaEjercicio rde
+            JOIN gym.RutinaDia d          ON d.RutinaDiaId = rde.RutinaDiaId
+            JOIN gym.EjercicioMusculo em  ON em.EjercicioId = rde.EjercicioId AND em.EsPrincipal = 1
+            JOIN gym.GrupoMuscular g      ON g.GrupoMuscularId = em.GrupoMuscularId
+            WHERE d.RutinaId = @rutinaId
+            """, new { rutinaId }, ct);
+        return filas.ToLookup(f => f.RutinaDiaId, f => f.Nombre);
     }
 
     private static Task<int?> RutinaDeDiaAsync(Db db, int diaId, int uid, CancellationToken ct) =>

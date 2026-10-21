@@ -27,12 +27,19 @@ public static class SesionEndpoints
         return Results.Ok(new { SesionId = p.Get<long>("SesionId"), Plan = plan });
     }
 
+    private static readonly HashSet<string> TiposSerie = ["N", "C", "F", "D", "R"];
+
     private static async Task<IResult> RegistrarSerie(long sesionId, SerieDto dto, HttpContext http, Db db, CancellationToken ct)
     {
+        // Se valida aquí porque SQL Server truncaría en silencio un texto largo a CHAR(1)
+        if (dto.TipoSerie is not null && !TiposSerie.Contains(dto.TipoSerie))
+            return Results.Problem(title: "Tipo de serie no válido (N, C, F, D o R).", statusCode: StatusCodes.Status400BadRequest);
+
         var p = new DynamicParameters(new
         {
             UsuarioId = http.UsuarioId(), SesionId = sesionId,
-            dto.EjercicioId, dto.Reps, dto.DuracionSeg, dto.PesoKg, dto.Rpe
+            dto.EjercicioId, dto.Reps, dto.DuracionSeg, dto.PesoKg, dto.Rpe,
+            TipoSerie = dto.TipoSerie ?? "N", dto.Notas
         });
         p.Add("SesionSerieId", dbType: DbType.Int64, direction: ParameterDirection.Output);
 

@@ -1,0 +1,3 @@
+Ilustraciones de ejercicios: Everkinetic (https://github.com/everkinetic/data).
+Licencia CC BY-SA 4.0: https://creativecommons.org/licenses/by-sa/4.0/
+Cambios: redimensionadas a 600 px de ancho y convertidas a WebP; sin otras modificaciones.

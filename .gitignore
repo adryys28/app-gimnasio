@@ -37,3 +37,6 @@ app/ios/Flutter/ephemeral/
 app/windows/flutter/ephemeral/
 app/linux/flutter/ephemeral/
 app/macos/Flutter/ephemeral/
+
+# Python (herramientas)
+__pycache__/

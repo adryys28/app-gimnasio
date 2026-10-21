@@ -12,6 +12,10 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSingleton<Db>();
 builder.Services.AddScoped<UsuarioActual>();
 
+// Generación de rutinas con IA. La clave va en secretos de usuario (desarrollo) o en Key Vault / variable
+// de entorno Ia__ClaveApi (producción), nunca en appsettings.json.
+builder.Services.AddHttpClient<GeneradorRutinaIa>(c => c.Timeout = TimeSpan.FromSeconds(90));
+
 if (builder.Environment.IsDevelopment())
 {
     // Solo desarrollo: la identidad se toma de la cabecera X-Dev-Sub
@@ -57,5 +61,7 @@ app.MapSesionEndpoints();
 app.MapActividadEndpoints();
 app.MapPerfilEndpoints();
 app.MapPlanEndpoints();
+app.MapEstadisticaEndpoints();
+app.MapEntrenamientoEndpoints();
 
 app.Run();
