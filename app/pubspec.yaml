@@ -12,7 +12,7 @@ dependencies:
   http: ^1.2.2
   # Mapas: flutter_map 8 (raster, multiplataforma) y coordenadas
   flutter_map: ^8.0.0
-  latlong2: ^0.9.1
+  latlong2: ^0.10.1
 
 dev_dependencies:
   flutter_test:
